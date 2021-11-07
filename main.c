@@ -5,6 +5,17 @@
 
 char data[MAX];
 
+/*
+ * class for ""
+ * class for num
+ * class for true/false
+ */
+
+/*
+ * cycle function to check for
+ * {}, :, ""
+ */
+
 void transfer(char name[]) {
     /*
      * check if file in dir and if not printf
