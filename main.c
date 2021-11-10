@@ -1,25 +1,50 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-#define MAX 3072
+struct node {
+    char value;
+    struct node* next;
+};
+typedef struct node node_t;
 
-char data[MAX];
+node_t *cNode(char value) {
+    node_t *result = malloc(sizeof(node_t));
+    result->value = value;
+    result->next = NULL;
+    return result;
+}
+
+node_t *insertEnd(node_t **head, char value) {
+    node_t *result = malloc(sizeof(node_t));
+    result->value = value;
+    result->next = NULL;
+
+    if(*head == NULL) {
+        *head = result;
+    } else {
+        node_t *lastNode = *head;
+
+        while(lastNode->next != NULL) {
+            lastNode = lastNode->next;
+        }
+        lastNode->next = result;
+    }
+}
+
+void printList(node_t *head) {
+    node_t *tmp = head;
+
+    while(tmp != NULL) {
+        printf("%c ", tmp->value);
+        tmp = tmp->next;
+    }
+    printf("\n");
+}
 
 /*
- * class for ""
- * class for num
- * class for true/false
- */
-
-/*
- * cycle function to check for
- * {}, :, ""
- */
-
 void transfer(char name[]) {
-    /*
-     * check if file in dir and if not printf
-     */
+    // check if file in dir and if not printf
     FILE *fptr;
     fptr = fopen(name, "r");
     char c = fgetc(fptr);
@@ -29,12 +54,17 @@ void transfer(char name[]) {
     }
 
     fclose(fptr);
-}
+}*/
 
 int main(int argc, char *argv[]) {
-    transfer(argv[1]);
+    node_t *head = NULL;
+    node_t *tmp;
 
-    printf("%s\n", data);
+    insertEnd(&head, 'A');
+    insertEnd(&head, 'B');
+    insertEnd(&head, 'C');
+
+    printList(head);
 
     return 0;
 }
