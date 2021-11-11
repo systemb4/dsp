@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 struct node {
     char value;
@@ -34,7 +35,6 @@ void printList(node_c *head) {
         printf("%c", tmp->value);
         tmp = tmp->next;
     }
-    printf("\n");
 }
 
 void transfer(char name[]) {
@@ -48,9 +48,34 @@ void transfer(char name[]) {
     fclose(fptr);
 }
 
+void searchFor(node_c *head, char searchValue) {
+    node_c *tmp = head;
+    char data[30];
+
+    while(tmp != NULL) {
+        //printf("%c", tmp->value);
+        if(tmp->value == searchValue) {
+            tmp = tmp->next;
+            while(tmp->value != ':') {
+                strncat(data, &tmp->value, 1);
+                tmp = tmp->next;
+            }
+        }
+        tmp = tmp->next;
+    }
+    printf("%s\n", data);
+}
+
 int main(int argc, char *argv[]) {
-    transfer(argv[1]);
+    if(argc <= 1) {
+        printf("You must give an input file!\n");
+        return 0;
+    } else {
+        transfer(argv[1]);
+    }
+
     printList(head);
+    searchFor(head, ',');
 
     return 0;
 }
