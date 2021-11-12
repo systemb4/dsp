@@ -2,4 +2,5 @@
 
 ## todo
 * documentation line for line
-* what's next?
+* search for definition and return value
+* return number of definitions/values
