@@ -1,4 +1,5 @@
-# interpreter_lang
+# Linear Data Sorting Library
+currently in development
 
 ## todo
 * documentation line for line
