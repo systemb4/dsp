@@ -1,1 +1,1 @@
-{, age: 15, human: false, race: "white"}
+{, age: 21, human: true, occupation: "doctor"}
