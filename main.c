@@ -13,6 +13,7 @@ node_c *head = NULL;
 
 node_c *insertEnd(node_c **head, char value) {
     node_c *result = malloc(sizeof(node_c));
+
     result->value = value;
     result->next = NULL;
 
@@ -38,14 +39,20 @@ void printList(node_c *head) {
 }
 
 void transfer(char name[]) {
-    FILE *fptr;
-    fptr = fopen(name, "r");
-    char c = fgetc(fptr);
+    FILE *fileO = fopen(name, "r");
+
+    if(fileO == NULL) {
+        printf("File does not exist!\n");
+        exit(EXIT_SUCCESS);
+    }
+
+    char c = fgetc(fileO);
     while(c != EOF) {
         insertEnd(&head, c);
-        c = fgetc(fptr);
+        c = fgetc(fileO);
     }
-    fclose(fptr);
+
+    fclose(fileO);
 }
 
 void searchFor(node_c *head, char searchValue) {
@@ -63,6 +70,7 @@ void searchFor(node_c *head, char searchValue) {
         }
         tmp = tmp->next;
     }
+
     printf("%s\n", data);
 }
 
