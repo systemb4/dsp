@@ -38,6 +38,8 @@ void printList(node_c *head) {
     }
 }
 
+
+
 void transfer(char name[]) {
     FILE *fileO = fopen(name, "r");
 
@@ -58,6 +60,10 @@ void transfer(char name[]) {
 void searchFor(node_c *head, char searchValue) {
     node_c *tmp = head;
     char data[30];
+
+    /*
+     * Fix this to only give one word
+     */
 
     while(tmp != NULL) {
         //printf("%c", tmp->value);
