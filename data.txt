@@ -1,1 +1,5 @@
-{, age: 21, human: true, occupation: "doctor"}
+{,
+    age: 21,
+    human: true,
+    occupation: "doctor",
+}

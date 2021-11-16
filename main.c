@@ -2,16 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct node {
+typedef struct node {
     char value;
     struct node* next;
-};
-
-typedef struct node node_c;
+} node_c;
 
 node_c *head = NULL;
 
-node_c *insertEnd(node_c **head, char value) {
+static node_c *insertEnd(node_c **head, char value) {
     node_c *result = malloc(sizeof(node_c));
 
     result->value = value;
@@ -29,7 +27,7 @@ node_c *insertEnd(node_c **head, char value) {
     }
 }
 
-void printList(node_c *head) {
+static void printList(node_c *head) {
     node_c *tmp = head;
 
     while(tmp != NULL) {
@@ -38,9 +36,7 @@ void printList(node_c *head) {
     }
 }
 
-
-
-void transfer(char name[]) {
+static void transfer(char name[]) {
     FILE *fileO = fopen(name, "r");
 
     if(fileO == NULL) {
@@ -57,27 +53,33 @@ void transfer(char name[]) {
     fclose(fileO);
 }
 
-void searchFor(node_c *head, char searchValue) {
+static char searchFor(node_c *head, char searchValue) {
     node_c *tmp = head;
     char data[30];
+
+    /*
+     * search should take in word
+     * check for value with spaces or : or , on either side
+     * if value is word return what it is : to or the opposite
+     */
 
     /*
      * Fix this to only give one word
      */
 
     while(tmp != NULL) {
-        //printf("%c", tmp->value);
         if(tmp->value == searchValue) {
-            tmp = tmp->next;
+            tmp = tmp->next->next;
             while(tmp->value != ':') {
                 strncat(data, &tmp->value, 1);
                 tmp = tmp->next;
             }
+            break;
         }
         tmp = tmp->next;
     }
 
-    printf("%s\n", data);
+    return data;
 }
 
 int main(int argc, char *argv[]) {
@@ -89,7 +91,7 @@ int main(int argc, char *argv[]) {
     }
 
     printList(head);
-    searchFor(head, ',');
+    printf("%s\n", searchFor(head, ','));
 
     return 0;
 }
