@@ -1,5 +1,6 @@
 # Linear Data Sorting Library
-currently in development
+currently in development\
+basically just a json lib for c
 
 Should this work with something like json, yaml, etc. or a custom format?
 
