@@ -40,7 +40,7 @@ static void transfer(char name[]) {
     FILE *fileO = fopen(name, "r");
 
     if(fileO == NULL) {
-        printf("File does not exist!\n");
+        fprintf(stderr, "File does not exist!\n");
         exit(EXIT_SUCCESS);
     }
 
@@ -74,7 +74,7 @@ static void searchFor(node_c *head, char searchValue) {
 
 int main(int argc, char *argv[]) {
     if(argc <= 1) {
-        printf("You must give an input file!\n");
+        fprintf(stderr, "You must give an input file!\n");
         return 0;
     } else {
         transfer(argv[1]);
