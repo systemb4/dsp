@@ -1,5 +1,5 @@
 # Data Sorting and Processing Library
-currently in development\
+currently in development
 
 Should this work with something like json, yaml, etc. or a custom format?\
 Should this also be able to just take long list of data in?
