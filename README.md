@@ -4,6 +4,10 @@ currently in development
 Should this work with something like json, yaml, etc. or a custom format?\
 Should this also be able to just take long list of data in?
 
+## installation
+currently manual, you can build with make, but you have to copy the lib manually
+to /usr/include/
+
 ## todo
 * add tree structure that links linked lists
 * change to a lib and be able to make as many ll's as user wants with different
