@@ -1,4 +1,4 @@
-# Linear Data Sorting Library
+# Data Sorting and Processing Library
 currently in development\
 
 Should this work with something like json, yaml, etc. or a custom format?\
