@@ -2,15 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct node {
+typedef struct Node {
     char value;
-    struct node* next;
-} node_c;
+    struct Node* next;
+} Node;
 
-node_c *head = NULL;
+Node *head = NULL;
 
-static node_c *insertEnd(node_c **head, char value) {
-    node_c *result = malloc(sizeof(node_c));
+static Node *insertEnd(Node **head, char value) {
+    Node *result = malloc(sizeof(Node));
 
     result->value = value;
     result->next = NULL;
@@ -18,7 +18,7 @@ static node_c *insertEnd(node_c **head, char value) {
     if(*head == NULL) {
         *head = result;
     } else {
-        node_c *lastNode = *head;
+        Node *lastNode = *head;
 
         while(lastNode->next != NULL) {
             lastNode = lastNode->next;
@@ -27,8 +27,8 @@ static node_c *insertEnd(node_c **head, char value) {
     }
 }
 
-static void printList(node_c *head) {
-    node_c *tmp = head;
+static void printList(Node *head) {
+    Node *tmp = head;
 
     while(tmp != NULL) {
         printf("%c", tmp->value);
@@ -53,8 +53,8 @@ static void transfer(char name[]) {
     fclose(fileO);
 }
 
-static void searchFor(node_c *head, char searchValue) {
-    node_c *tmp = head;
+static void searchFor(Node *head, char searchValue) {
+    Node *tmp = head;
     char data[30];
 
     while(tmp != NULL) {
