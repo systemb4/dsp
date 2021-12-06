@@ -1,4 +1,4 @@
-# Data Sorting and Processing Library Written in C
+# Data Sorting and Processing Library in C
 currently in development
 
 Should this work with something like json, yaml, etc. or a custom format?\
