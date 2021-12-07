@@ -7,8 +7,6 @@ typedef struct Node {
     struct Node* next;
 } Node;
 
-Node *head = NULL;
-
 static Node *insertEnd(Node **head, char value) {
     Node *result = malloc(sizeof(Node));
 
@@ -36,7 +34,7 @@ static void printList(Node *head) {
     }
 }
 
-static void transfer(char name[]) {
+static void transfer(Node *head, char name[]) {
     FILE *fileO = fopen(name, "r");
 
     if(fileO == NULL) {
@@ -46,7 +44,7 @@ static void transfer(char name[]) {
 
     char c = fgetc(fileO);
     while(c != EOF) {
-        insertEnd(&head, c);
+        insertEnd(head, c);
         c = fgetc(fileO);
     }
 
@@ -73,15 +71,16 @@ static void searchFor(Node *head, char searchValue) {
 }
 
 int main(int argc, char *argv[]) {
+    Node *head = NULL;
+
     if(argc <= 1) {
         fprintf(stderr, "You must give an input file!\n");
         return 0;
     } else {
-        transfer(argv[1]);
+        transfer(head, argv[1]);
     }
 
     printList(head);
     searchFor(head, ',');
 
     return 0;
-}
