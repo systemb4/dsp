@@ -34,7 +34,7 @@ static void printList(Node *head) {
     }
 }
 
-static void transfer(Node *head, char name[]) {
+static void *transfer(Node *head, char name[]) {
     FILE *fileO = fopen(name, "r");
 
     if(fileO == NULL) {
@@ -44,7 +44,7 @@ static void transfer(Node *head, char name[]) {
 
     char c = fgetc(fileO);
     while(c != EOF) {
-        insertEnd(head, c);
+        insertEnd(&head, c);
         c = fgetc(fileO);
     }
 
@@ -84,3 +84,4 @@ int main(int argc, char *argv[]) {
     searchFor(head, ',');
 
     return 0;
+}
