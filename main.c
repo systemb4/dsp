@@ -34,6 +34,7 @@ static void printList(Node *head) {
     }
 }
 
+// broken
 static void *transfer(Node *head, char name[]) {
     FILE *fileO = fopen(name, "r");
 

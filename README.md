@@ -5,6 +5,9 @@ currently in development
 currently manual, you can build with make, but you have to copy the lib manually
 to /usr/include/
 
+## issues
+* transfer function currently broken, compiles but returns false char's
+
 ## todo
 * sort by increaseing/decreasing number if number list
 * sort by alphabetical order
@@ -18,3 +21,5 @@ to /usr/include/
 * number of definitions
 * documentation of each function
 * documentation of how it works
+
+* make compatibility for json in jsonin.h
