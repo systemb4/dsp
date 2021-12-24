@@ -9,6 +9,7 @@ to /usr/include/
 * transfer function currently broken, compiles but returns false char's
 
 ## todo
+* be able to choose a data structure based on the pattern of the input file
 * sort by increaseing/decreasing number if number list
 * sort by alphabetical order
 * search and replace within file
