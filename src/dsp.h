@@ -1,3 +1,9 @@
+/*
+ * dsp.h
+ * Data Sorting and Processing Library
+ * Author: Lukas Nitzsche
+ */
+
 #ifndef __DSP_H__
 #define __DSP_H__
 
