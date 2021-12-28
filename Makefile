@@ -1,4 +1,10 @@
-main:
-	gcc main.c -o main
+CC=gcc
+
+output: main.o
+	$(CC) main.o -o output
+
+main.o: main.c
+	$(CC) -c main.c
+
 clean:
-	rm -f main
+	rm *.o output
