@@ -9,10 +9,10 @@ to /usr/include/
 * transfer function currently broken, compiles but returns false char's
 
 ## todo
-* be able to choose a data structure based on the pattern of the input file
 * sort by increaseing/decreasing number if number list
 * sort by alphabetical order
 * search and replace within file
+* be able to choose a data structure based on the pattern of the input file
 * add tree structure that links linked lists
 * change to a lib and be able to make as many ll's as user wants with different
   head names
@@ -22,5 +22,12 @@ to /usr/include/
 * number of definitions
 * documentation of each function
 * documentation of how it works
+* Makefile to install lib to system
 
-* make compatibility for json in jsonin.h
+
+## progress calender
+28 Dec 2021: dsp.h included in main.c compiles, but does not give output. Output
+    is just gibbereish. Problem lies in the transfer function. The transfer
+    function uses the insertEnd function which takes a head parameter as a
+    pointer. The transfer function also takes in a head parameter and uses that in
+    the call of the insertEnd function within the function causing the error.

@@ -6,16 +6,16 @@ typedef struct Node {
     struct Node* next;
 } Node;
 
-static Node *insertEnd(Node **head, char value) {
+Node *insertEnd(Node *head, char value) {
     Node *result = malloc(sizeof(Node));
 
     result->value = value;
     result->next = NULL;
 
-    if(*head == NULL) {
-        *head = result;
+    if(head == NULL) {
+        head = result;
     } else {
-        Node *lastNode = *head;
+        Node *lastNode = head;
 
         while(lastNode->next != NULL) {
             lastNode = lastNode->next;
@@ -24,7 +24,7 @@ static Node *insertEnd(Node **head, char value) {
     }
 }
 
-static void printList(Node *head) {
+void printList(Node *head) {
     Node *tmp = head;
 
     while(tmp != NULL) {
@@ -34,7 +34,7 @@ static void printList(Node *head) {
 }
 
 // broken
-static void *transfer(Node *head, char name[]) {
+void *transfer(Node **head, char name[]) {
     FILE *fileO = fopen(name, "r");
 
     if(fileO == NULL) {
@@ -44,14 +44,14 @@ static void *transfer(Node *head, char name[]) {
 
     char c = fgetc(fileO);
     while(c != EOF) {
-        insertEnd(&head, c);
+        insertEnd(*head, c);
         c = fgetc(fileO);
     }
 
     fclose(fileO);
 }
 
-static void searchFor(Node *head, char searchValue) {
+void searchFor(Node *head, char searchValue) {
     Node *tmp = head;
     char data[30];
 

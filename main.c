@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "You must give an input file!\n");
         return 0;
     } else {
-        transfer(head, argv[1]);
+        transfer(&head, argv[1]);
     }
 
     printList(head);
