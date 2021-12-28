@@ -5,13 +5,13 @@
 #include "src/dsp.h"
 
 int main(int argc, char *argv[]) {
-    Node *head = NULL;
+    //Node *head = NULL;
 
     if(argc <= 1) {
         fprintf(stderr, "You must give an input file!\n");
         return 0;
     } else {
-        transfer(&head, argv[1]);
+        transfer(argv[1]);
     }
 
     printList(head);
