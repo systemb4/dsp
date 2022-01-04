@@ -12,8 +12,6 @@ typedef struct Node {
     struct Node* next;
 } Node;
 
-Node *head = NULL;
-
 Node *insertEnd(Node **head, char value) {
     Node *result = malloc(sizeof(Node));
 
@@ -42,7 +40,7 @@ void printList(Node *head) {
 }
 
 // broken
-void *transfer(char name[]) {
+void *transfer(Node *head, char name[]) {
     FILE *fileO = fopen(name, "r");
 
     if(fileO == NULL) {
