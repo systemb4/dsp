@@ -6,7 +6,7 @@ currently manual, you can build with make, but you have to copy the lib manually
 to /usr/include/
 
 ## issues
-* transfer function currently broken, compiles but returns false char's
+* transferring file to linked list
 
 ## todo
 * sort by increaseing/decreasing number if number list
@@ -31,3 +31,9 @@ to /usr/include/
     function uses the insertEnd function which takes a head parameter as a
     pointer. The transfer function also takes in a head parameter and uses that in
     the call of the insertEnd function within the function causing the error.
+
+4 January 2022: Code compiles without warning or error, but when running it does
+    print anything. I do not think it is a problem with the printList
+    (src/dsp.h) function, but instead a problem with creating the linked list
+    and calling the insertEnd (src/dsp.h) function within the transfer
+    (src/dsp.h) function.
