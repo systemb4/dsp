@@ -12,6 +12,7 @@ typedef struct Node {
     struct Node* next;
 } Node;
 
+/*
 void *insertEnd(Node *head, char value) {
     Node *result = malloc(sizeof(Node));
 
@@ -28,6 +29,17 @@ void *insertEnd(Node *head, char value) {
         }
         lastNode->next = result;
     }
+}
+
+*/
+
+
+/* Add a new node to linked list */
+void* insertEnd(Node *head, char num) {
+    Node *new_node = malloc(sizeof(Node));
+    new_node->value = num;
+    new_node->next= head;
+    head = new_node;
 }
 
 void printList(Node *head) {
@@ -49,6 +61,16 @@ void* transfer(Node *head, char name[]) {
     }
 
     char c = fgetc(fileO);
+
+    // print contents directly from file
+    /*
+    while (c != EOF)
+    {
+        printf ("%c", c);
+        c = fgetc(fileO);
+    }
+    */
+
     while(c != EOF) {
         insertEnd(head, c);
         c = fgetc(fileO);
