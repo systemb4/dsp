@@ -12,16 +12,16 @@ typedef struct Node {
     struct Node* next;
 } Node;
 
-Node *insertEnd(Node **head, char value) {
+void *insertEnd(Node *head, char value) {
     Node *result = malloc(sizeof(Node));
 
     result->value = value;
     result->next = NULL;
 
-    if(*head == NULL) {
-        *head = result;
+    if(head == NULL) {
+        head = result;
     } else {
-        Node *lastNode = *head;
+        Node *lastNode = head;
 
         while(lastNode->next != NULL) {
             lastNode = lastNode->next;
@@ -50,7 +50,7 @@ void *transfer(Node *head, char name[]) {
 
     char c = fgetc(fileO);
     while(c != EOF) {
-        insertEnd(&head, c);
+        insertEnd(head, c);
         c = fgetc(fileO);
     }
 
