@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
     }
 
     printList(head);
-    searchFor(head, ',');
+    //searchFor(head, ',');
 
     return 0;
 }

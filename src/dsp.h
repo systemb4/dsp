@@ -40,7 +40,7 @@ void printList(Node *head) {
 }
 
 // broken
-void *transfer(Node *head, char name[]) {
+void* transfer(Node *head, char name[]) {
     FILE *fileO = fopen(name, "r");
 
     if(fileO == NULL) {
