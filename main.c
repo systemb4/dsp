@@ -15,6 +15,7 @@ int main(int argc, char *argv[]) {
     }
 
     printList(head);
+    printf("%c", head->value);
     //searchFor(head, ',');
 
     return 0;
