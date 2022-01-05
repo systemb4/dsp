@@ -12,6 +12,7 @@ typedef struct Node {
     struct Node* next;
 } Node;
 
+/*
 void insertEnd(Node **head, char val) {
     Node *result = malloc(sizeof(Node));
     Node *lastNode = *head;
@@ -30,8 +31,9 @@ void insertEnd(Node **head, char val) {
     }
 
     return;
-}
+}*/
 
+/*
 void printList(Node *head) {
     Node *tmp = head;
 
@@ -40,8 +42,10 @@ void printList(Node *head) {
         tmp = tmp->next;
     }
 }
+*/
 
 // broken
+/*
 void* transfer(Node *head, char name[]) {
     FILE *fileO = fopen(name, "r");
 
@@ -59,7 +63,9 @@ void* transfer(Node *head, char name[]) {
 
     fclose(fileO);
 }
+*/
 
+/*
 void searchFor(Node *head, char searchValue) {
     Node *tmp = head;
     char data[30];
@@ -78,5 +84,6 @@ void searchFor(Node *head, char searchValue) {
 
     printf("%s\n", data);
 }
+*/
 
 #endif /* end include */

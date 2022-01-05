@@ -21,13 +21,14 @@ int main(int argc, char *argv[]) {
     //printList(head);
     //searchFor(head, ',');
 
-    Node *test1;
-    Node *test2;
+    Node *test1 = NULL;
+    Node *test2 = NULL;
 
     test1->value = 'a';
     test1->next = test2;
 
     test2->value = 'b';
+    test2->next = NULL;
 
     //printList(test1);
     printf("%c\n", test1->value);
