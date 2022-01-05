@@ -29,6 +29,14 @@ int main(int argc, char *argv[]) {
     test2.next = NULL;
 
     printList(head);
+    printf("\n");
+
+    insertEnd(&head, 'c');
+
+    printList(head);
+    printf("\n");
+
+
 
     return 0;
 }

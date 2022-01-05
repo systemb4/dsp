@@ -12,7 +12,6 @@ typedef struct Node {
     struct Node* next;
 } Node;
 
-/*
 void insertEnd(Node **head, char val) {
     Node *result = malloc(sizeof(Node));
     Node *lastNode = *head;
@@ -31,7 +30,7 @@ void insertEnd(Node **head, char val) {
     }
 
     return;
-}*/
+}
 
 void printList(Node *head) {
     Node *tmp = head;
