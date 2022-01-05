@@ -42,7 +42,7 @@ void printList(Node *head) {
 }
 
 // broken
-void transfer(Node *head, char name[]) {
+void transfer(Node **head, char name[]) {
     FILE *fileO = fopen(name, "r");
 
     if(fileO == NULL) {
@@ -53,7 +53,7 @@ void transfer(Node *head, char name[]) {
     char c = fgetc(fileO);
 
     while(c != EOF) {
-        insertEnd(&head, c);
+        insertEnd(head, c);
         c = fgetc(fileO);
     }
 
