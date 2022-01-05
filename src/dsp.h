@@ -4,8 +4,8 @@
  * Author: Lukas Nitzsche
  */
 
-#ifndef __DSP_H__
-#define __DSP_H__
+//#ifndef __DSP_H__
+//#define __DSP_H__
 
 typedef struct Node {
     char value;
@@ -33,7 +33,6 @@ void insertEnd(Node **head, char val) {
     return;
 }*/
 
-/*
 void printList(Node *head) {
     Node *tmp = head;
 
@@ -42,7 +41,6 @@ void printList(Node *head) {
         tmp = tmp->next;
     }
 }
-*/
 
 // broken
 /*
@@ -86,4 +84,4 @@ void searchFor(Node *head, char searchValue) {
 }
 */
 
-#endif /* end include */
+//#endif /* end include */

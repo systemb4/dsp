@@ -1,11 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include "src/dsp.h"
 
 int main(int argc, char *argv[]) {
-    //Node *head = NULL;
+    Node *head = NULL;
 
     /*
     if(argc <= 1) {
@@ -16,23 +15,20 @@ int main(int argc, char *argv[]) {
     }
     */
 
-    printf("Hello World!");
-
     //printList(head);
     //searchFor(head, ',');
 
-    Node *test1 = NULL;
-    Node *test2 = NULL;
+    Node test1;
+    Node test2;
 
-    test1->value = 'a';
-    test1->next = test2;
+    head = &test1;
+    test1.value = 'a';
+    test1.next = &test2;
 
-    test2->value = 'b';
-    test2->next = NULL;
+    test2.value = 'b';
+    test2.next = NULL;
 
-    //printList(test1);
-    printf("%c\n", test1->value);
-    printf("%c\n", test2->value);
+    printList(head);
 
     return 0;
 }
