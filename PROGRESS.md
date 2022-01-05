@@ -10,6 +10,7 @@
     (src/dsp.h) function, but instead a problem with creating the linked list
     and calling the insertEnd (src/dsp.h) function within the transfer
     (src/dsp.h) function.
+
 5 January 2022: Transfer function fixed, it was only a problem of giving place
     in memory instead of actual value in the head parameter. Cleaned up
     everything and work on search will begin.
