@@ -53,18 +53,11 @@ void transfer(Node *head, char name[]) {
     char c = fgetc(fileO);
 
     while(c != EOF) {
-        //printf("%c\n", c);
         insertEnd(&head, c);
-        printList(head);
-        printf("\n");
         c = fgetc(fileO);
     }
 
     fclose(fileO);
-
-    printf("\n");
-    printf("List:");
-    printList(head);
 }
 
 /*
