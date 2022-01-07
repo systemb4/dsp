@@ -9,7 +9,7 @@
 
 typedef struct Node {
     char value;
-    struct Node* next;
+    struct Node *next;
 } Node;
 
 void insertEnd(Node **head, char val) {
