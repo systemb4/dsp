@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
         transfer(&head, argv[1]);
     }
 
-    printNode(head);
+    //printNode(head);
 
     return 0;
 }

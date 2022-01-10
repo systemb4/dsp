@@ -12,20 +12,20 @@
 
 #define NAME(base) CONCAT(base, __COUNTER__)
 
-typedef struct llNode {
+typedef struct List {
     char value;
-    struct llNode *next;
-} llNode;
+    struct List *next;
+} List;
 
 typedef struct Node {
-    struct llNode *name_value;
-    struct llNode *def_value;
+    struct List *name_value;
+    struct List *def_value;
     struct Node *next;
 } Node;
 
-void insertEnd(llNode **head, char val) {
-    llNode *result = malloc(sizeof(llNode));
-    llNode *lastNode = *head;
+void insertEnd(List **head, char val) {
+    List *result = malloc(sizeof(List));
+    List *lastNode = *head;
 
     result->value = val;
     result->next = NULL;
@@ -41,7 +41,7 @@ void insertEnd(llNode **head, char val) {
     }
 }
 
-void createNode(Node **head, llNode **name) {
+void createNode(Node **head, List **name) {
     Node *result = malloc(sizeof(Node));
     Node *lastNode = *head;
 
@@ -59,8 +59,8 @@ void createNode(Node **head, llNode **name) {
     }
 }
 
-void printLList(llNode *head) {
-    llNode *tmp = head;
+void printList(List *head) {
+    List *tmp = head;
 
     while(tmp != NULL) {
         printf("%c", tmp->value);
@@ -70,8 +70,8 @@ void printLList(llNode *head) {
 }
 
 void printNode(Node *head) {
-    llNode *name = head->name_value;
-    llNode *def = head->def_value;
+    List *name = head->name_value;
+    List *def = head->def_value;
 
     while(name != NULL) {
         printf("%c", name->value) ;
@@ -98,32 +98,52 @@ void transfer(Node **head, char name[]) {
 
     char c = fgetc(fileO);
 
-    int i = 1;
     while(c != EOF) {
-        llNode *list = NULL;
-        while(i != 0) {
+        List *name = NULL;
+        List *def = NULL;
+
+        printf("foobar\n");
+        // get name
+        while(1) {
+            insertEnd(&name, c);
+            c = fgetc(fileO);
             if(c == ';' || c == ':' || c == '"') {
                 c = fgetc(fileO);
-                i = 0;
+                break;
             }
-            insertEnd(&list, c);
+        }
+
+        c = fgetc(fileO);
+
+        // get def
+        while(1) {
+            if(c == ':' || c == ';') {
+                c = fgetc(fileO);
+                break;
+            }
+            insertEnd(&def, c);
             c = fgetc(fileO);
         }
-        c = fgetc(fileO);
-        createNode(head, &list);
-        //printLList(list);
-        i = 1;
-        while(i != 0) {
+
+        createNode(head, &name);
+        printList(name);
+        printList(def);
+        printf("foo\n");
+
+        // go to next line
+        while(1) {
             c = fgetc(fileO);
-            if(c == '\n') {
-                i = 0;
+            if(c == ';') {
+                break;
                 c = fgetc(fileO);
             }
         }
     }
+    printf("barfoo\n");
+    fclose(fileO);
 }
 
-void llTransfer(llNode **head, char name[]) {
+void llTransfer(List **head, char name[]) {
     FILE *fileO = fopen(name, "r");
 
     if(fileO == NULL) {
@@ -141,8 +161,8 @@ void llTransfer(llNode **head, char name[]) {
     fclose(fileO);
 }
 
-void llSearchFor(llNode *head, char searchValue) {
-    llNode *tmp = head;
+void llSearchFor(List *head, char searchValue) {
+    List *tmp = head;
     char data[30];
 
     while(tmp != NULL) {
