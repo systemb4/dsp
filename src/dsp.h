@@ -141,8 +141,7 @@ void llTransfer(llNode **head, char name[]) {
     fclose(fileO);
 }
 
-/*
-void searchFor(llNode *head, char searchValue) {
+void llSearchFor(llNode *head, char searchValue) {
     llNode *tmp = head;
     char data[30];
 
@@ -160,6 +159,5 @@ void searchFor(llNode *head, char searchValue) {
 
     printf("%s\n", data);
 }
-*/
 
 #endif /* end include */

@@ -14,3 +14,9 @@
 5 January 2022: Transfer function fixed, it was only a problem of giving place
     in memory instead of actual value in the head parameter. Cleaned up
     everything and work on search will begin.
+
+10 January 2022: BIG CHANGES, created new struct that takes two linked lists and
+    a link to it's own node type. This will take in a name/definition style
+    language ending with semicolons. File types end in .dsp Functions added like
+    createNode (src/dsp.h) and printNode (src/dsp.h) and others added. Goal
+    right now is to create own data processing language syntax.
