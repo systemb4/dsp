@@ -9,7 +9,6 @@
 
 #define CONCAT(a, b) CONCAT_INNER(a, b)
 #define CONCAT_INNER(a, b) a ## b
-
 #define NAME(base) CONCAT(base, __COUNTER__)
 
 typedef struct List {
@@ -102,7 +101,6 @@ void transfer(Node **head, char name[]) {
         List *name = NULL;
         List *def = NULL;
 
-        printf("foobar\n");
         // get name
         while(1) {
             insertEnd(&name, c);
@@ -118,7 +116,6 @@ void transfer(Node **head, char name[]) {
         // get def
         while(1) {
             if(c == ':' || c == ';') {
-                c = fgetc(fileO);
                 break;
             }
             insertEnd(&def, c);
@@ -128,18 +125,19 @@ void transfer(Node **head, char name[]) {
         createNode(head, &name);
         printList(name);
         printList(def);
-        printf("foo\n");
+        /* printf("%c\n", c); */
 
         // go to next line
+        if(c == ';') {
         while(1) {
-            c = fgetc(fileO);
-            if(c == ';') {
-                break;
+            if(c =='\n') {
                 c = fgetc(fileO);
+                break;
             }
+            c = fgetc(fileO);
+        }
         }
     }
-    printf("barfoo\n");
     fclose(fileO);
 }
 
