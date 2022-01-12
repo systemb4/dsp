@@ -20,3 +20,9 @@
     language ending with semicolons. File types end in .dsp Functions added like
     createNode (src/dsp.h) and printNode (src/dsp.h) and others added. Goal
     right now is to create own data processing language syntax.
+
+12 January 2022: I may be pivoting a little bit. Instead of putting the entire
+    file into a linked list, I will be writing a lexer that takes in the entire file
+    and defines each character with its own type, place in file, and value. The
+    reason I am doing this is so that I could maybe end up writing my own
+    programming language.

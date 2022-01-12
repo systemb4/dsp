@@ -99,7 +99,7 @@ void transfer(Node **head, char name[]) {
 
     while(c != EOF) {
         List *name = NULL;
-        List *def = NULL;
+        List *def= NULL;
 
         // get name
         while(1) {
@@ -125,17 +125,16 @@ void transfer(Node **head, char name[]) {
         createNode(head, &name);
         printList(name);
         printList(def);
-        /* printf("%c\n", c); */
 
         // go to next line
         if(c == ';') {
-        while(1) {
-            if(c =='\n') {
+            while(1) {
+                if(c =='\n') {
+                    c = fgetc(fileO);
+                    break;
+                }
                 c = fgetc(fileO);
-                break;
             }
-            c = fgetc(fileO);
-        }
         }
     }
     fclose(fileO);
