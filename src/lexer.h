@@ -84,9 +84,10 @@ Token lexer(char name[]) {
 
     fclose(fileO);
 
-    printTokens(tokens, chars);
+    /*Token *ptrtokens = malloc(chars * sizeof(Token));
+    return ptrtokens;*/
 
-    //return tokens;
+    printTokens(tokens, chars);
 }
 
-#endif /* end ikclude */
+#endif /* end include */
