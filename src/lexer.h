@@ -2,17 +2,15 @@
  * Author: Lukas Nitzsche
  */
 
-#include <ctype.h>
-
 #ifndef __LEXER_H__
 #define __LEXER_H__
 
-enum tokenType {IDEN, NUM, LPAREN, RPAREN, SEMICOL, COL} tokenType;
+enum tokenType {IDEN, NUM, LPAREN, RPAREN, SEMICOL, COL, QUOTM} tokenType;
 
 typedef struct Token {
     int id;
-    enum tokenType tokenType;
     char symbol;
+    enum tokenType tokenType;
 } Token;
 
 int charCount(FILE *fptr) {
@@ -30,17 +28,22 @@ int charCount(FILE *fptr) {
         c = fgetc(fptr);
     }
 
-    return chars;
+    return chars - 1;
 }
 
-void printTokens(Token tokens[]) {
+void printTokens(Token tokens[], int length) {
+    for(int i = 0; i < length; i++) {
+        printf("ID: %d ", tokens[i].id);
+        printf("Symbol: %c ", tokens[i].symbol);
+        printf("\n");
+    }
 }
 
 Token lexer(char name[]) {
     FILE *fileO = fopen(name, "r");
     int chars = charCount(fileO);
     rewind(fileO);
-    Token tokens[sizeof(fileO)];
+    Token tokens[chars];
 
     if(fileO == NULL) {
         fprintf(stderr, "File does not exist!\n");
@@ -67,16 +70,23 @@ Token lexer(char name[]) {
                 tokens[i].id = i;
                 tokens[i].tokenType = COL;
                 tokens[i].symbol = c;
-            case :
+            case '"':
+                tokens[i].id = i;
+                tokens[i].tokenType = QUOTM;
+                tokens[i].symbol = c;
+            default :
                 tokens[i].id = i;
                 tokens[i].tokenType = IDEN;
                 tokens[i].symbol = c;
-            default :
         }
         c = fgetc(fileO);
     }
 
     fclose(fileO);
+
+    printTokens(tokens, chars);
+
+    //return tokens;
 }
 
-#endif /* end include */
+#endif /* end ikclude */

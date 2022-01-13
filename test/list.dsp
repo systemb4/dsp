@@ -1,2 +1,1 @@
-noun: "person, place, or thing";
-verb: "an action";
+(verb): "an action";
