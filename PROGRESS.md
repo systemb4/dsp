@@ -26,3 +26,9 @@
     and defines each character with its own type, place in file, and value. The
     reason I am doing this is so that I could maybe end up writing my own
     programming language.
+
+13 January 2022: The lexer kind of works, but needs some improvment. The lexer
+    (src/lexer.h) function needs to be able to return a Token array. The
+    printArray method and in general use the enum value in the Token struct
+    needs to be able to convert to a string so that it's word value can be read
+    and printed although this will not be important for the parser.
