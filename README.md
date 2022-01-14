@@ -7,13 +7,16 @@ to /usr/include/
 
 ## todo
 ### lexer
-* return Token array from lexer function
-* convert enum to string some how
-* print enum in printTokens function
+* [X] return Token array from lexer function
+* [ ] fix free memory (somehow free mem after returning)
+* [ ] convert enum to string some how
+* [ ] print enum in printTokens function
+* [ ] Type defaults only to IDEN for some reason which is defined in the default
+      switch
 
 ### documentation
-* documentation of each function
-* documentation of how it works
+* [ ] documentation of each function
+* [ ] documentation of how it works
 
 ## notes
 * predefined macros in c
