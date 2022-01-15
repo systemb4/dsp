@@ -1,5 +1,0 @@
-{,
-    age: 21,
-    human: true,
-    occupation: "doctor",
-}
