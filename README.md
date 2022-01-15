@@ -24,9 +24,9 @@ to /usr/include/
 * [ ] have a default main.c that is compiled and installed to system
 
 ## notes
-* predefined macros in c
-    __DATE__ current date
-    __FILE__ current file name
-    __LINE__ current line number
-    __STDC__ If follows ANSI standard C, then the value is a nonzero integer
+* predefined macros in c \
+    __DATE__ current date \
+    __FILE__ current file name \
+    __LINE__ current line number \
+    __STDC__ If follows ANSI standard C, then the value is a nonzero integer \
     __TIME__ current time
