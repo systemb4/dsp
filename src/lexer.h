@@ -26,8 +26,6 @@ static const char *TOKEN_STRING[] = {
     FOREACH_TOKEN(GENERATE_STRING)
 };
 
-/*enum tokenType {IDEN, LPAREN, RPAREN, SEMICOL, COL, QUOTM} tokenType;*/
-
 typedef struct Token {
     int id;
     char symbol;
@@ -51,27 +49,6 @@ int charCount(FILE *fptr) {
 
     return chars - 1;
 }
-
-/*
-
-char *conTokenType(enum tokenType input) {
-    switch(input) {
-        case IDEN:
-            return "IDEN";
-        case LPAREN:
-            return "LPAREN";
-        case RPAREN:
-            return "RPAREN";
-        case SEMICOL:
-            return "SEMICOL";
-        case COL:
-            return "COL";
-        case QUOTM:
-            return "QUOTM";
-    }
-}
-
-*/
 
 void printTokens(Token tokens[]) {
     for(int i = 0; i < 20; i++) {
@@ -102,30 +79,35 @@ Token *lexer(char name[]) {
                 tokens[i].id = i;
                 tokens[i].type = LPAREN;
                 tokens[i].symbol = c;
+                break;
             case ')':
                 tokens[i].id = i;
                 tokens[i].type = RPAREN;
                 tokens[i].symbol = c;
+                break;
             case ';':
                 tokens[i].id = i;
                 tokens[i].type = SEMICOL;
                 tokens[i].symbol = c;
+                break;
             case ':':
                 tokens[i].id = i;
                 tokens[i].type = COL;
                 tokens[i].symbol = c;
+                break;
             case '"':
                 tokens[i].id = i;
                 tokens[i].type = QUOTM;
                 tokens[i].symbol = c;
+                break;
             default :
                 tokens[i].id = i;
                 tokens[i].type = IDEN;
                 tokens[i].symbol = c;
+                break;
         }
         c = fgetc(fileO);
     }
-
     fclose(fileO);
 
     return tokens;

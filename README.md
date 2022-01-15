@@ -8,10 +8,11 @@ to /usr/include/
 ## todo
 ### lexer
 * [X] return Token array from lexer function
+* [ ] printArray function length fix (i < " ")
 * [ ] fix free memory (somehow free mem after returning)
-* [ ] convert enum to string some how
-* [ ] print enum in printTokens function
-* [ ] Type defaults only to IDEN for some reason which is defined in the default
+* [X] convert enum to string some how
+* [X] print enum in printTokens function
+* [X] Type defaults only to IDEN for some reason which is defined in the default
       switch
 
 ### documentation
