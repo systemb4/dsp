@@ -1,4 +1,4 @@
-# Data Sorting and Processing Library in C
+# name needed
 currently in development
 
 ## installation
@@ -18,6 +18,10 @@ to /usr/include/
 ### documentation
 * [ ] documentation of each function
 * [ ] documentation of how it works
+
+### compile
+* [ ] install all header files to system
+* [ ] have a default main.c that is compiled and installed to system
 
 ## notes
 * predefined macros in c

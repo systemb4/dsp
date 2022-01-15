@@ -32,3 +32,8 @@
     printArray method and in general use the enum value in the Token struct
     needs to be able to convert to a string so that it's word value can be read
     and printed although this will not be important for the parser.
+
+14 January 2022: Token type bug fixed. Only needed add a break function at the
+    end of each switch case. Although unnecessary, printTokens function for loop
+    has bug for length of struct array. Sizeof will only return the size of the
+    pointer and not the actual amount of structs in the array.
