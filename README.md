@@ -14,6 +14,8 @@ to /usr/include/
 * [X] print enum in printTokens function
 * [X] Type defaults only to IDEN for some reason which is defined in the default
       switch
+* [ ] multi thread? (middle out? somehow)
+* [ ] implement test.h to check time(length) to of execution
 
 ### documentation
 * [ ] documentation of each function
@@ -22,6 +24,7 @@ to /usr/include/
 ### compile
 * [ ] install all header files to system
 * [ ] have a default main.c that is compiled and installed to system
+* [ ] fix up make file
 
 ## notes
 * predefined macros in c \
