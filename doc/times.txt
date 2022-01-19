@@ -1,21 +1,14 @@
--- Single Thread
-Time: 0.000032
-Time: 0.000053
-Time: 0.000038
-Time: 0.000041
-Time: 0.000040
-Time: 0.000033
-Time: 0.000032
-Time: 0.000035
-Time: 0.000051
-Time: 0.000042
-Time: 0.000037
-Time: 0.000034
-Time: 0.000036
-Time: 0.000033
-Time: 0.000057
-Time: 0.000040
-Time: 0.000036
-Time: 0.000034
-Time: 0.000044
-Time: 0.000043
+-- Single Thread, 8023 byte file
+Time: 0.000190
+Time: 0.000163
+Time: 0.000167
+Time: 0.000181
+Time: 0.000288
+Time: 0.000166
+Time: 0.000196
+Time: 0.000177
+Time: 0.000162
+Time: 0.000161
+Average: 0.000185
+-- , 8023 byte file
+

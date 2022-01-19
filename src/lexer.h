@@ -37,8 +37,11 @@ static const char *TOKEN_STRING[] = {
 
 typedef struct Token {
     int id;
-    char symbol;
     enum tokenType type;
+    union {
+        char symbol;
+        long int val;
+    };
 } Token;
 
 int charCount(FILE *fptr) {
@@ -63,7 +66,10 @@ void printTokens(Token tokens[]) {
     for(int i = 0; i < 100; i++) {
         printf("ID: %d ", tokens[i].id);
         printf("Type: %s ", TOKEN_STRING[tokens[i].type]);
-        printf("Symbol: %c ", tokens[i].symbol);
+        if(TOKEN_STRING[tokens[i].type] == "NUM")
+            printf("Symbol: %ld ", tokens[i].val);
+        else
+            printf("Symbol: %c ", tokens[i].symbol);
         printf("\n");
     }
     free(tokens);
@@ -153,11 +159,12 @@ Token *lexer(char name[]) {
                     tokens[i].type = CHAR;
                     tokens[i].symbol = c;
                     break;
+                } else {
+                    tokens[i].id = i;
+                    tokens[i].type = NUM;
+                    tokens[i].val = c - '0';
+                    break;
                 }
-                tokens[i].id = i;
-                tokens[i].type = NUM;
-                tokens[i].symbol = c;
-                break;
         }
         c = fgetc(fileO);
     }
