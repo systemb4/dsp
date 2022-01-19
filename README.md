@@ -7,14 +7,10 @@ to /usr/include/
 
 ## todo
 ### lexer
-* [X] return Token array from lexer function
+* [ ] need to put words together and all
 * [ ] printArray function length fix (i < " ")
 * [ ] fix free memory (somehow free mem after returning)
-* [X] convert enum to string some how
-* [X] print enum in printTokens function
-* [X] Type defaults only to IDEN for some reason which is defined in the default
-      switch
-* [ ] multi thread? (middle out? somehow)
+* [ ] multi thread?
 * [ ] implement test.h to check time(length) to of execution
 
 ### documentation

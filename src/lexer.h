@@ -3,17 +3,26 @@
  */
 
 #include <stdlib.h>
+#include <ctype.h>
 
 #ifndef __LEXER_H__
 #define __LEXER_H__
 
 #define FOREACH_TOKEN(TOKEN) \
-    TOKEN(LPAREN)  \
-    TOKEN(IDEN)   \
+    TOKEN(LPAREN)   \
+    TOKEN(CHAR)     \
+    TOKEN(NUM)      \
     TOKEN(RPAREN)   \
     TOKEN(SEMICOL)  \
-    TOKEN(COL)  \
-    TOKEN(QUOTM)  \
+    TOKEN(COL)      \
+    TOKEN(COMMA)    \
+    TOKEN(QUOTM)    \
+    TOKEN(LBRACKET) \
+    TOKEN(RBRACKET) \
+    TOKEN(PLUS)     \
+    TOKEN(MINUS)    \
+    TOKEN(FSLASH)   \
+    TOKEN(STAR)     \
 
 #define GENERATE_ENUM(ENUM) ENUM,
 #define GENERATE_STRING(STRING) #STRING,
@@ -51,13 +60,16 @@ int charCount(FILE *fptr) {
 }
 
 void printTokens(Token tokens[]) {
-    for(int i = 0; i < 20; i++) {
+    for(int i = 0; i < 100; i++) {
         printf("ID: %d ", tokens[i].id);
         printf("Type: %s ", TOKEN_STRING[tokens[i].type]);
         printf("Symbol: %c ", tokens[i].symbol);
         printf("\n");
     }
     free(tokens);
+}
+
+void *threadTokenCheck(char c, Token tokens[]) {
 }
 
 Token *lexer(char name[]) {
@@ -100,9 +112,50 @@ Token *lexer(char name[]) {
                 tokens[i].type = QUOTM;
                 tokens[i].symbol = c;
                 break;
-            default :
+            case '[':
                 tokens[i].id = i;
-                tokens[i].type = IDEN;
+                tokens[i].type = LBRACKET;
+                tokens[i].symbol = c;
+                break;
+            case ']':
+                tokens[i].id = i;
+                tokens[i].type = RBRACKET;
+                tokens[i].symbol = c;
+                break;
+            case '+':
+                tokens[i].id = i;
+                tokens[i].type = PLUS;
+                tokens[i].symbol = c;
+                break;
+            case '-':
+                tokens[i].id = i;
+                tokens[i].type = MINUS;
+                tokens[i].symbol = c;
+                break;
+            case '/':
+                tokens[i].id = i;
+                tokens[i].type = FSLASH;
+                tokens[i].symbol = c;
+                break;
+            case '*':
+                tokens[i].id = i;
+                tokens[i].type = STAR;
+                tokens[i].symbol = c;
+                break;
+            case ',':
+                tokens[i].id = i;
+                tokens[i].type = COMMA;
+                tokens[i].symbol = c;
+                break;
+            default :
+                if(isalpha(c)) {
+                    tokens[i].id = i;
+                    tokens[i].type = CHAR;
+                    tokens[i].symbol = c;
+                    break;
+                }
+                tokens[i].id = i;
+                tokens[i].type = NUM;
                 tokens[i].symbol = c;
                 break;
         }

@@ -1,2 +1,3 @@
-(verb): "an action";
-
+(verb1): ["an action"];
+(name): ["Lukas Nitzsche"];
+(result): [1 + 1];

@@ -37,3 +37,8 @@
     end of each switch case. Although unnecessary, printTokens function for loop
     has bug for length of struct array. Sizeof will only return the size of the
     pointer and not the actual amount of structs in the array.
+
+19 January 2022: Can now sort between numbers and letters which will allow for
+    math and all as well. I plan on trying to make a multithreaded algorithem
+    that will shorten the time to process the text file into tokens. I will also
+    record times before and after.
