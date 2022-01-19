@@ -3,6 +3,7 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 #include <ctype.h>
 
 #ifndef __LEXER_H__
@@ -52,11 +53,8 @@ int charCount(FILE *fptr) {
         exit(EXIT_SUCCESS);
     }
 
-    char c = fgetc(fptr);
-
-    while(c != EOF) {
+    while(fgetc(fptr) != EOF) {
         chars++;
-        c = fgetc(fptr);
     }
 
     return chars - 1;
@@ -66,10 +64,13 @@ void printTokens(Token tokens[]) {
     for(int i = 0; i < 100; i++) {
         printf("ID: %d ", tokens[i].id);
         printf("Type: %s ", TOKEN_STRING[tokens[i].type]);
-        if(TOKEN_STRING[tokens[i].type] == "NUM")
+
+        /* broken */
+        if(strcmp(TOKEN_STRING[tokens[i].type], TOKEN_STRING[NUM]) == 0)
             printf("Symbol: %ld ", tokens[i].val);
         else
             printf("Symbol: %c ", tokens[i].symbol);
+
         printf("\n");
     }
     free(tokens);
@@ -159,10 +160,12 @@ Token *lexer(char name[]) {
                     tokens[i].type = CHAR;
                     tokens[i].symbol = c;
                     break;
-                } else {
+                } else if(!isalpha(c)) {
                     tokens[i].id = i;
                     tokens[i].type = NUM;
                     tokens[i].val = c - '0';
+                    break;
+                } else {
                     break;
                 }
         }
