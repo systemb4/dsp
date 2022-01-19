@@ -41,4 +41,5 @@
 19 January 2022: Can now sort between numbers and letters which will allow for
     math and all as well. I plan on trying to make a multithreaded algorithem
     that will shorten the time to process the text file into tokens. I will also
-    record times before and after.
+    record times before and after. I also made a union in the struct that allows
+    the storage of either a char or long int depending on the var type.
