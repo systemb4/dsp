@@ -46,6 +46,12 @@ typedef struct Token {
     };
 } Token;
 
+typedef struct thread_args {
+    FILE *fptr;
+    Token *tokens;
+    int val;
+} thread_args;
+
 int charCount(FILE *fptr) {
     int chars = 0;
 
@@ -76,70 +82,71 @@ void printTokens(Token tokens[]) {
     free(tokens);
 }
 
-void *threadTokenCheckTop(FILE *fptr, Token *tokens, int val) {
-    char c = fgetc(fptr);
+void *threadTokenCheckTop(void *ptr) {
+    thread_args *args = (thread_args *)ptr;
+    char c = fgetc(args->fptr);
 
-    for(int i = 0; i <= val; i++) {
+    for(int i = 0; i <= args->val; i++) {
         switch(c) {
             case '(':
-                tokens[i].id = i;
-                tokens[i].type = LPAREN;
-                tokens[i].symbol = c;
+                args->tokens[i].id = i;
+                args->tokens[i].type = LPAREN;
+                args->tokens[i].symbol = c;
                 break;
             case ')':
-                tokens[i].id = i;
-                tokens[i].type = RPAREN;
-                tokens[i].symbol = c;
+                args->tokens[i].id = i;
+                args->tokens[i].type = RPAREN;
+                args->tokens[i].symbol = c;
                 break;
             case ';':
-                tokens[i].id = i;
-                tokens[i].type = SEMICOL;
-                tokens[i].symbol = c;
+                args->tokens[i].id = i;
+                args->tokens[i].type = SEMICOL;
+                args->tokens[i].symbol = c;
                 break;
             case ':':
-                tokens[i].id = i;
-                tokens[i].type = COL;
-                tokens[i].symbol = c;
+                args->tokens[i].id = i;
+                args->tokens[i].type = COL;
+                args->tokens[i].symbol = c;
                 break;
             case '"':
-                tokens[i].id = i;
-                tokens[i].type = QUOTM;
-                tokens[i].symbol = c;
+                args->tokens[i].id = i;
+                args->tokens[i].type = QUOTM;
+                args->tokens[i].symbol = c;
                 break;
             case '[':
-                tokens[i].id = i;
-                tokens[i].type = LBRACKET;
-                tokens[i].symbol = c;
+                args->tokens[i].id = i;
+                args->tokens[i].type = LBRACKET;
+                args->tokens[i].symbol = c;
                 break;
             case ']':
-                tokens[i].id = i;
-                tokens[i].type = RBRACKET;
-                tokens[i].symbol = c;
+                args->tokens[i].id = i;
+                args->tokens[i].type = RBRACKET;
+                args->tokens[i].symbol = c;
                 break;
             case '+':
-                tokens[i].id = i;
-                tokens[i].type = PLUS;
-                tokens[i].symbol = c;
+                args->tokens[i].id = i;
+                args->tokens[i].type = PLUS;
+                args->tokens[i].symbol = c;
                 break;
             case '-':
-                tokens[i].id = i;
-                tokens[i].type = MINUS;
-                tokens[i].symbol = c;
+                args->tokens[i].id = i;
+                args->tokens[i].type = MINUS;
+                args->tokens[i].symbol = c;
                 break;
             case '/':
-                tokens[i].id = i;
-                tokens[i].type = FSLASH;
-                tokens[i].symbol = c;
+                args->tokens[i].id = i;
+                args->tokens[i].type = FSLASH;
+                args->tokens[i].symbol = c;
                 break;
             case '*':
-                tokens[i].id = i;
-                tokens[i].type = STAR;
-                tokens[i].symbol = c;
+                args->tokens[i].id = i;
+                args->tokens[i].type = STAR;
+                args->tokens[i].symbol = c;
                 break;
             case ',':
-                tokens[i].id = i;
-                tokens[i].type = COMMA;
-                tokens[i].symbol = c;
+                args->tokens[i].id = i;
+                args->tokens[i].type = COMMA;
+                args->tokens[i].symbol = c;
                 break;
             case ' ':
                 i--;
@@ -149,18 +156,18 @@ void *threadTokenCheckTop(FILE *fptr, Token *tokens, int val) {
                 break;
             default :
                 if(isalpha(c)) {
-                    tokens[i].id = i;
-                    tokens[i].type = CHAR;
-                    tokens[i].symbol = c;
+                    args->tokens[i].id = i;
+                    args->tokens[i].type = CHAR;
+                    args->tokens[i].symbol = c;
                     break;
                 } else if(isdigit(c)) {
-                    tokens[i].id = i;
-                    tokens[i].type = NUM;
-                    tokens[i].val = c - '0';
+                    args->tokens[i].id = i;
+                    args->tokens[i].type = NUM;
+                    args->tokens[i].val = c - '0';
                     break;
                 }
         }
-        c = fgetc(fptr);
+        c = fgetc(args->fptr);
     }
 
     pthread_exit(NULL);
@@ -182,11 +189,18 @@ Token *lexer(char name[]) {
         exit(EXIT_SUCCESS);
     }
 
+    thread_args threadArgsTop;
+    threadArgsTop.fptr = fileO;
+    threadArgsTop.tokens = tokens;
+    threadArgsTop.val = (chars - (chars / 2));
+
     pthread_t threads[1];
     int threadTop;
 
     threadTop = pthread_create(&threads[0], NULL,
-            threadTokenCheckTop(fileO, tokens, (chars - (chars / 2))), NULL);
+            threadTokenCheckTop, (void *) &threadArgsTop);
+
+    printTokens(tokens);
 
     fclose(fileO);
 
