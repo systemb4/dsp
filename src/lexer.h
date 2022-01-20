@@ -65,7 +65,6 @@ void printTokens(Token tokens[]) {
         printf("ID: %d ", tokens[i].id);
         printf("Type: %s ", TOKEN_STRING[tokens[i].type]);
 
-        /* broken */
         if(strcmp(TOKEN_STRING[tokens[i].type], TOKEN_STRING[NUM]) == 0)
             printf("Symbol: %ld ", tokens[i].val);
         else
@@ -154,18 +153,22 @@ Token *lexer(char name[]) {
                 tokens[i].type = COMMA;
                 tokens[i].symbol = c;
                 break;
+            case ' ':
+                i--;
+                break;
+            case '\n':
+                i--;
+                break;
             default :
                 if(isalpha(c)) {
                     tokens[i].id = i;
                     tokens[i].type = CHAR;
                     tokens[i].symbol = c;
                     break;
-                } else if(!isalpha(c)) {
+                } else if(isdigit(c)) {
                     tokens[i].id = i;
                     tokens[i].type = NUM;
                     tokens[i].val = c - '0';
-                    break;
-                } else {
                     break;
                 }
         }
