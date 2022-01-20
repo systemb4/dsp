@@ -76,70 +76,70 @@ void printTokens(Token tokens[]) {
     free(tokens);
 }
 
-void *threadTokenCheckTop(FILE *fptr, Token **tokens, int val) {
+void *threadTokenCheckTop(FILE *fptr, Token *tokens, int val) {
     char c = fgetc(fptr);
 
     for(int i = 0; i <= val; i++) {
-        switch(c) {/*{{{*/
+        switch(c) {
             case '(':
-                tokens[i]->id = i;
-                tokens[i]->type = LPAREN;
-                tokens[i]->symbol = c;
+                tokens[i].id = i;
+                tokens[i].type = LPAREN;
+                tokens[i].symbol = c;
                 break;
             case ')':
-                tokens[i]->id = i;
-                tokens[i]->type = RPAREN;
-                tokens[i]->symbol = c;
+                tokens[i].id = i;
+                tokens[i].type = RPAREN;
+                tokens[i].symbol = c;
                 break;
             case ';':
-                tokens[i]->id = i;
-                tokens[i]->type = SEMICOL;
-                tokens[i]->symbol = c;
+                tokens[i].id = i;
+                tokens[i].type = SEMICOL;
+                tokens[i].symbol = c;
                 break;
             case ':':
-                tokens[i]->id = i;
-                tokens[i]->type = COL;
-                tokens[i]->symbol = c;
+                tokens[i].id = i;
+                tokens[i].type = COL;
+                tokens[i].symbol = c;
                 break;
             case '"':
-                tokens[i]->id = i;
-                tokens[i]->type = QUOTM;
-                tokens[i]->symbol = c;
+                tokens[i].id = i;
+                tokens[i].type = QUOTM;
+                tokens[i].symbol = c;
                 break;
             case '[':
-                tokens[i]->id = i;
-                tokens[i]->type = LBRACKET;
-                tokens[i]->symbol = c;
+                tokens[i].id = i;
+                tokens[i].type = LBRACKET;
+                tokens[i].symbol = c;
                 break;
             case ']':
-                tokens[i]->id = i;
-                tokens[i]->type = RBRACKET;
-                tokens[i]->symbol = c;
+                tokens[i].id = i;
+                tokens[i].type = RBRACKET;
+                tokens[i].symbol = c;
                 break;
             case '+':
-                tokens[i]->id = i;
-                tokens[i]->type = PLUS;
-                tokens[i]->symbol = c;
+                tokens[i].id = i;
+                tokens[i].type = PLUS;
+                tokens[i].symbol = c;
                 break;
             case '-':
-                tokens[i]->id = i;
-                tokens[i]->type = MINUS;
-                tokens[i]->symbol = c;
+                tokens[i].id = i;
+                tokens[i].type = MINUS;
+                tokens[i].symbol = c;
                 break;
             case '/':
-                tokens[i]->id = i;
-                tokens[i]->type = FSLASH;
-                tokens[i]->symbol = c;
+                tokens[i].id = i;
+                tokens[i].type = FSLASH;
+                tokens[i].symbol = c;
                 break;
             case '*':
-                tokens[i]->id = i;
-                tokens[i]->type = STAR;
-                tokens[i]->symbol = c;
+                tokens[i].id = i;
+                tokens[i].type = STAR;
+                tokens[i].symbol = c;
                 break;
             case ',':
-                tokens[i]->id = i;
-                tokens[i]->type = COMMA;
-                tokens[i]->symbol = c;
+                tokens[i].id = i;
+                tokens[i].type = COMMA;
+                tokens[i].symbol = c;
                 break;
             case ' ':
                 i--;
@@ -149,25 +149,24 @@ void *threadTokenCheckTop(FILE *fptr, Token **tokens, int val) {
                 break;
             default :
                 if(isalpha(c)) {
-                    tokens[i]->id = i;
-                    tokens[i]->type = CHAR;
-                    tokens[i]->symbol = c;
+                    tokens[i].id = i;
+                    tokens[i].type = CHAR;
+                    tokens[i].symbol = c;
                     break;
                 } else if(isdigit(c)) {
-                    tokens[i]->id = i;
-                    tokens[i]->type = NUM;
-                    tokens[i]->val = c - '0';
+                    tokens[i].id = i;
+                    tokens[i].type = NUM;
+                    tokens[i].val = c - '0';
                     break;
                 }
         }
-        c = fgetc(fptr);/*}}}*/
+        c = fgetc(fptr);
     }
-    //printTokens(tokens);
 
     pthread_exit(NULL);
 }
 
-void *threadTokenCheckBottom(FILE fptr, Token *tokens, int val) {
+void *threadTokenCheckBottom(FILE *fptr, Token *tokens, int val) {
 
     pthread_exit(NULL);
 }
@@ -187,7 +186,7 @@ Token *lexer(char name[]) {
     int threadTop;
 
     threadTop = pthread_create(&threads[0], NULL,
-            threadTokenCheckTop(fileO, &tokens, (chars - (chars / 2))), NULL);
+            threadTokenCheckTop(fileO, tokens, (chars - (chars / 2))), NULL);
 
     fclose(fileO);
 
@@ -281,7 +280,6 @@ Token *lexer(char name[]) {
                     tokens[i].id = i;
                     tokens[i].type = CHAR;
                     tokens[i].symbol = c;
-                    break;
                 } else if(isdigit(c)) {
                     tokens[i].id = i;
                     tokens[i].type = NUM;
