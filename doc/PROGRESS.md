@@ -43,3 +43,7 @@
     that will shorten the time to process the text file into tokens. I will also
     record times before and after. I also made a union in the struct that allows
     the storage of either a char or long int depending on the var type.
+
+20 January 2022: Three major obsitcles: multithreadeding the lexer, parser,
+    interpreter, writing an abstract syntax tree (AST), and comign up with a
+    viable syntax for the input language.

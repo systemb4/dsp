@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <pthread.h>
 #include <ctype.h>
 
 #ifndef __LEXER_H__
@@ -75,9 +76,125 @@ void printTokens(Token tokens[]) {
     free(tokens);
 }
 
-void *threadTokenCheck(char c, Token tokens[]) {
+void *threadTokenCheckTop(FILE *fptr, Token **tokens, int val) {
+    char c = fgetc(fptr);
+
+    for(int i = 0; i <= val; i++) {
+        switch(c) {/*{{{*/
+            case '(':
+                tokens[i]->id = i;
+                tokens[i]->type = LPAREN;
+                tokens[i]->symbol = c;
+                break;
+            case ')':
+                tokens[i]->id = i;
+                tokens[i]->type = RPAREN;
+                tokens[i]->symbol = c;
+                break;
+            case ';':
+                tokens[i]->id = i;
+                tokens[i]->type = SEMICOL;
+                tokens[i]->symbol = c;
+                break;
+            case ':':
+                tokens[i]->id = i;
+                tokens[i]->type = COL;
+                tokens[i]->symbol = c;
+                break;
+            case '"':
+                tokens[i]->id = i;
+                tokens[i]->type = QUOTM;
+                tokens[i]->symbol = c;
+                break;
+            case '[':
+                tokens[i]->id = i;
+                tokens[i]->type = LBRACKET;
+                tokens[i]->symbol = c;
+                break;
+            case ']':
+                tokens[i]->id = i;
+                tokens[i]->type = RBRACKET;
+                tokens[i]->symbol = c;
+                break;
+            case '+':
+                tokens[i]->id = i;
+                tokens[i]->type = PLUS;
+                tokens[i]->symbol = c;
+                break;
+            case '-':
+                tokens[i]->id = i;
+                tokens[i]->type = MINUS;
+                tokens[i]->symbol = c;
+                break;
+            case '/':
+                tokens[i]->id = i;
+                tokens[i]->type = FSLASH;
+                tokens[i]->symbol = c;
+                break;
+            case '*':
+                tokens[i]->id = i;
+                tokens[i]->type = STAR;
+                tokens[i]->symbol = c;
+                break;
+            case ',':
+                tokens[i]->id = i;
+                tokens[i]->type = COMMA;
+                tokens[i]->symbol = c;
+                break;
+            case ' ':
+                i--;
+                break;
+            case '\n':
+                i--;
+                break;
+            default :
+                if(isalpha(c)) {
+                    tokens[i]->id = i;
+                    tokens[i]->type = CHAR;
+                    tokens[i]->symbol = c;
+                    break;
+                } else if(isdigit(c)) {
+                    tokens[i]->id = i;
+                    tokens[i]->type = NUM;
+                    tokens[i]->val = c - '0';
+                    break;
+                }
+        }
+        c = fgetc(fptr);/*}}}*/
+    }
+    //printTokens(tokens);
+
+    pthread_exit(NULL);
 }
 
+void *threadTokenCheckBottom(FILE fptr, Token *tokens, int val) {
+
+    pthread_exit(NULL);
+}
+
+Token *lexer(char name[]) {
+    FILE *fileO = fopen(name, "r");
+    int chars = charCount(fileO);
+    rewind(fileO);
+    Token *tokens = malloc(sizeof(struct Token) * chars);
+
+    if(fileO == NULL) {
+        fprintf(stderr, "File does not exist!\n");
+        exit(EXIT_SUCCESS);
+    }
+
+    pthread_t threads[1];
+    int threadTop;
+
+    threadTop = pthread_create(&threads[0], NULL,
+            threadTokenCheckTop(fileO, &tokens, (chars - (chars / 2))), NULL);
+
+    fclose(fileO);
+
+    return tokens;
+}
+
+/*
 Token *lexer(char name[]) {
     FILE *fileO = fopen(name, "r");
     int chars = charCount(fileO);
@@ -177,6 +294,6 @@ Token *lexer(char name[]) {
     fclose(fileO);
 
     return tokens;
-}
+}*/
 
 #endif /* end include */

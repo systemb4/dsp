@@ -1,7 +1,8 @@
 CC=gcc
+CFLAGS=-lpthread
 
 output: main.o
-	$(CC) main.o -o output
+	$(CC) $(CFLAGS) main.o -o output
 
 main.o: main.c
 	$(CC) -c main.c
