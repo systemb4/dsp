@@ -50,6 +50,7 @@ typedef struct thread_args {
     FILE *fptr;
     Token *tokens;
     int val;
+    int chars;
 } thread_args;
 
 int charCount(FILE *fptr) {
@@ -67,7 +68,7 @@ int charCount(FILE *fptr) {
     return chars - 1;
 }
 
-void printTokens(Token tokens[]) {
+void printTokens(Token *tokens) {
     for(int i = 0; i < 100; i++) {
         printf("ID: %d ", tokens[i].id);
         printf("Type: %s ", TOKEN_STRING[tokens[i].type]);
@@ -173,7 +174,97 @@ void *threadTokenCheckTop(void *ptr) {
     pthread_exit(NULL);
 }
 
-void *threadTokenCheckBottom(FILE *fptr, Token *tokens, int val) {
+void *threadTokenCheckBottom(void *ptr) {
+    thread_args *args = (thread_args *)ptr;
+    char c = fgetc(args->fptr);
+
+    for(int i = 0; i <= args->val; i++) {
+        c = fgetc(args->fptr);
+    }
+
+    for(int i = args->val; i <= args->chars; i++) {
+        switch(c) {
+            case '(':
+                args->tokens[i].id = i;
+                args->tokens[i].type = LPAREN;
+                args->tokens[i].symbol = c;
+                break;
+            case ')':
+                args->tokens[i].id = i;
+                args->tokens[i].type = RPAREN;
+                args->tokens[i].symbol = c;
+                break;
+            case ';':
+                args->tokens[i].id = i;
+                args->tokens[i].type = SEMICOL;
+                args->tokens[i].symbol = c;
+                break;
+            case ':':
+                args->tokens[i].id = i;
+                args->tokens[i].type = COL;
+                args->tokens[i].symbol = c;
+                break;
+            case '"':
+                args->tokens[i].id = i;
+                args->tokens[i].type = QUOTM;
+                args->tokens[i].symbol = c;
+                break;
+            case '[':
+                args->tokens[i].id = i;
+                args->tokens[i].type = LBRACKET;
+                args->tokens[i].symbol = c;
+                break;
+            case ']':
+                args->tokens[i].id = i;
+                args->tokens[i].type = RBRACKET;
+                args->tokens[i].symbol = c;
+                break;
+            case '+':
+                args->tokens[i].id = i;
+                args->tokens[i].type = PLUS;
+                args->tokens[i].symbol = c;
+                break;
+            case '-':
+                args->tokens[i].id = i;
+                args->tokens[i].type = MINUS;
+                args->tokens[i].symbol = c;
+                break;
+            case '/':
+                args->tokens[i].id = i;
+                args->tokens[i].type = FSLASH;
+                args->tokens[i].symbol = c;
+                break;
+            case '*':
+                args->tokens[i].id = i;
+                args->tokens[i].type = STAR;
+                args->tokens[i].symbol = c;
+                break;
+            case ',':
+                args->tokens[i].id = i;
+                args->tokens[i].type = COMMA;
+                args->tokens[i].symbol = c;
+                break;
+            case ' ':
+                i--;
+                break;
+            case '\n':
+                i--;
+                break;
+            default :
+                if(isalpha(c)) {
+                    args->tokens[i].id = i;
+                    args->tokens[i].type = CHAR;
+                    args->tokens[i].symbol = c;
+                    break;
+                } else if(isdigit(c)) {
+                    args->tokens[i].id = i;
+                    args->tokens[i].type = NUM;
+                    args->tokens[i].val = c - '0';
+                    break;
+                }
+        }
+        c = fgetc(args->fptr);
+    }
 
     pthread_exit(NULL);
 }
@@ -189,18 +280,25 @@ Token *lexer(char name[]) {
         exit(EXIT_SUCCESS);
     }
 
-    thread_args threadArgsTop;
+    thread_args threadArgsTop, threadArgsBottom;
     threadArgsTop.fptr = fileO;
     threadArgsTop.tokens = tokens;
     threadArgsTop.val = (chars - (chars / 2));
 
-    pthread_t threads[1];
-    int threadTop;
+    threadArgsBottom.fptr = fileO;
+    threadArgsBottom.tokens = tokens;
+    threadArgsBottom.val = (chars - (chars / 2));
+    threadArgsBottom.chars = chars;
+
+    pthread_t threads[2];
+    int threadTop, threadBottom;
 
     threadTop = pthread_create(&threads[0], NULL,
-            threadTokenCheckTop, (void *) &threadArgsTop);
+            threadTokenCheckTop, &threadArgsTop);
+    threadBottom = pthread_create(&threads[1], NULL,
+            threadTokenCheckBottom, &threadArgsBottom);
 
-    printTokens(tokens);
+    //printTokens(tokens);
 
     fclose(fileO);
 
