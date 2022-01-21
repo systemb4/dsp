@@ -47,3 +47,7 @@
 20 January 2022: Three major obsitcles: multithreadeding the lexer, parser,
     interpreter, writing an abstract syntax tree (AST), and comign up with a
     viable syntax for the input language.
+
+20 January 2022: Began implementing multiple threads but have been running into
+    bugs and issues as I am not familiar with this type of "parallel
+    programming".

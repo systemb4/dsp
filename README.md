@@ -6,12 +6,14 @@ currently manual, you can build with make, but you have to copy the lib manually
 to /usr/include/
 
 ## todo
+### general
+* [ ] implement test.h to check time(length) to of execution
+
 ### lexer
-* [ ] need to put words together and all
+* [ ] move open FILE seperatly to each thread function
+* [ ] condense thread function params
 * [ ] printArray function length fix (i < " ")
 * [ ] fix free memory (somehow free mem after returning)
-* [ ] multi thread?
-* [ ] implement test.h to check time(length) to of execution
 
 ### documentation
 * [ ] documentation of each function
