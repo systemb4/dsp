@@ -42,12 +42,12 @@ typedef struct Token {
     enum tokenType type;
     union {
         char symbol;
-        long int val;
+        int val;
     };
 } Token;
 
 typedef struct thread_args {
-    FILE *fptr;
+    char *file_name;
     Token *tokens;
     int val;
     int chars;
@@ -85,7 +85,8 @@ void printTokens(Token *tokens) {
 
 void *threadTokenCheckTop(void *ptr) {
     thread_args *args = (thread_args *)ptr;
-    char c = fgetc(args->fptr);
+    FILE *fptr = fopen(args->file_name, "r");
+    char c = fgetc(fptr);
 
     for(int i = 0; i <= args->val; i++) {
         switch(c) {
@@ -168,18 +169,21 @@ void *threadTokenCheckTop(void *ptr) {
                     break;
                 }
         }
-        c = fgetc(args->fptr);
+        c = fgetc(fptr);
     }
 
+    fclose(fptr);
     pthread_exit(NULL);
 }
 
 void *threadTokenCheckBottom(void *ptr) {
     thread_args *args = (thread_args *)ptr;
-    char c = fgetc(args->fptr);
+
+    FILE *fptr = fopen(args->file_name, "r");
+    char c = fgetc(fptr);
 
     for(int i = 0; i <= args->val; i++) {
-        c = fgetc(args->fptr);
+        c = fgetc(fptr);
     }
 
     for(int i = args->val; i <= args->chars; i++) {
@@ -263,29 +267,32 @@ void *threadTokenCheckBottom(void *ptr) {
                     break;
                 }
         }
-        c = fgetc(args->fptr);
+        c = fgetc(fptr);
     }
 
+    fclose(fptr);
     pthread_exit(NULL);
 }
 
 Token *lexer(char name[]) {
-    FILE *fileO = fopen(name, "r");
-    int chars = charCount(fileO);
-    rewind(fileO);
+    FILE *fptr = fopen(name, "r");
+    int chars = charCount(fptr);
+    rewind(fptr);
     Token *tokens = malloc(sizeof(struct Token) * chars);
 
-    if(fileO == NULL) {
+    if(fptr == NULL) {
         fprintf(stderr, "File does not exist!\n");
         exit(EXIT_SUCCESS);
     }
 
     thread_args threadArgsTop, threadArgsBottom;
-    threadArgsTop.fptr = fileO;
+
+    threadArgsTop.file_name = name;
     threadArgsTop.tokens = tokens;
     threadArgsTop.val = (chars - (chars / 2));
+    threadArgsBottom.chars = 0;
 
-    threadArgsBottom.fptr = fileO;
+    threadArgsBottom.file_name = name;
     threadArgsBottom.tokens = tokens;
     threadArgsBottom.val = (chars - (chars / 2));
     threadArgsBottom.chars = chars;
@@ -295,12 +302,13 @@ Token *lexer(char name[]) {
 
     threadTop = pthread_create(&threads[0], NULL,
             threadTokenCheckTop, &threadArgsTop);
-    threadBottom = pthread_create(&threads[1], NULL,
-            threadTokenCheckBottom, &threadArgsBottom);
+
+    /* threadBottom = pthread_create(&threads[1], NULL,
+            threadTokenCheckBottom, &threadArgsBottom); */
+
+    fclose(fptr);
 
     //printTokens(tokens);
-
-    fclose(fileO);
 
     return tokens;
 }
@@ -404,6 +412,7 @@ Token *lexer(char name[]) {
     fclose(fileO);
 
     return tokens;
-}*/
+}
+*/
 
 #endif /* end include */

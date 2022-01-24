@@ -8,7 +8,7 @@ int main(int argc, char *argv[]) {
     clock_t begin = clock();
 
     Token *tokens = lexer(argv[1]);
-    free(tokens);
+    printTokens(tokens);
 
     clock_t end = clock();
 
