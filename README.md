@@ -14,6 +14,7 @@ to /usr/include/
 * [ ] condense thread function params
 * [ ] printArray function length fix (i < " ")
 * [ ] fix free memory (somehow free mem after returning)
+* [ ] function for switch statments
 
 ### documentation
 * [ ] documentation of each function

@@ -1,0 +1,8 @@
+const (verb): ["an action"];
+const (adj): ["description"];
+const (num): ['4.62'];
+(result): ['4' + '3'];
+(nums): ['2' + '7' * '4' - '6' / '8'];
+(two_strings): [verb + adj];
+
+print (name);

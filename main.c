@@ -2,13 +2,13 @@
 #include <time.h>
 
 #include "src/lexer.h"
+#include "src/parser.h"
 
 int main(int argc, char *argv[]) {
     double timeSpent = 0.0;
     clock_t begin = clock();
 
     Token *tokens = lexer(argv[1]);
-    printTokens(tokens);
 
     clock_t end = clock();
 
