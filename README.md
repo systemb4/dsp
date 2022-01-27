@@ -15,6 +15,7 @@ to /usr/include/
 * [ ] printArray function length fix (i < " ")
 * [ ] fix free memory (somehow free mem after returning)
 * [ ] function for switch statments
+* [ ] add comparison ops
 
 ### documentation
 * [ ] documentation of each function

@@ -6,9 +6,10 @@
 #include <string.h>
 #include <pthread.h>
 #include <ctype.h>
+#include <stdbool.h>
 
-#ifndef __LEXER_H__
-#define __LEXER_H__
+#ifndef __NACHTIGAL_H__
+#define __NACHTIGAL_H__
 
 #define FOREACH_TOKEN(TOKEN) \
     TOKEN(LPAREN)   \
@@ -19,7 +20,7 @@
     TOKEN(COL)      \
     TOKEN(COMMA)    \
     TOKEN(QUOTM)    \
-    TOKEN(QUOTEM)    \
+    TOKEN(QUOTEM)   \
     TOKEN(LBRACKET) \
     TOKEN(RBRACKET) \
     TOKEN(PLUS)     \
@@ -27,7 +28,14 @@
     TOKEN(FSLASH)   \
     TOKEN(STAR)     \
     TOKEN(DOT)      \
-    TOKEN(EXCL)      \
+    TOKEN(EXCL)     \
+    TOKEN(END)      \
+
+#define FOREACH_KEYWORD(KEYWORD) \
+    KEYWORD(IF) \
+    KEYWORD(CONST) \
+    KEYWORD(NAME) \
+    KEYWORD(DEF) \
 
 #define GENERATE_ENUM(ENUM) ENUM,
 #define GENERATE_STRING(STRING) #STRING,
@@ -40,6 +48,14 @@ static const char *TOKEN_STRING[] = {
     FOREACH_TOKEN(GENERATE_STRING)
 };
 
+enum keyWord {
+    FOREACH_KEYWORD(GENERATE_ENUM)
+};
+
+static const char *KEYWORD_STRING[] = {
+    FOREACH_KEYWORD(GENERATE_STRING)
+};
+
 typedef struct Token {
     int id;
     enum tokenType type;
@@ -47,7 +63,24 @@ typedef struct Token {
         char symbol;
         double val;
     };
+    bool end;
 } Token;
+
+typedef struct Ast {
+    union {
+        char *name;
+        char *definition;
+    };
+    union {
+        char *valC;
+        double valN;
+    };
+    Token token;
+    int id;
+    struct Ast *nameLink;
+    struct Ast *definitionLink;
+    enum keyWord type;
+} Ast;
 
 int charCount(FILE *fptr) {
     int chars = 0;
@@ -64,8 +97,19 @@ int charCount(FILE *fptr) {
     return chars - 1;
 }
 
+int tokensLength(Token *tokens) {
+    int i = 0;
+    while(!tokens[i].end) {
+        i++;
+    }
+
+    return i;
+}
+
 void printTokens(Token *tokens) {
-    for(int i = 0; i < 100; i++) {
+    int length = tokensLength(tokens);
+
+    for(int i = 0; i < length; i++) {
         printf("ID: %d ", tokens[i].id);
         printf("Type: %s ", TOKEN_STRING[tokens[i].type]);
 
@@ -76,14 +120,14 @@ void printTokens(Token *tokens) {
 
         printf("\n");
     }
-    free(tokens);
+    // free(tokens);
 }
 
 Token *lexer(char name[]) {
     FILE *fileO = fopen(name, "r");
-    int chars = charCount(fileO);
+    int length = charCount(fileO);
     rewind(fileO);
-    Token *tokens = malloc(sizeof(struct Token) * chars);
+    Token *tokens = malloc(sizeof(struct Token) * length);
 
     if(fileO == NULL) {
         fprintf(stderr, "File does not exist!\n");
@@ -92,7 +136,7 @@ Token *lexer(char name[]) {
 
     char c = fgetc(fileO);
 
-    for(int i = 0; i < chars; i++) {
+    for(int i = 0; i < length; i++) {
         switch(c) {
             case '(':
                 tokens[i].id = i;
@@ -185,6 +229,9 @@ Token *lexer(char name[]) {
                     tokens[i].type = NUM;
                     tokens[i].val = c - '0';
                     break;
+                } else if(c == EOF) {
+                    tokens[i].id = i;
+                    tokens[i].end = true;
                 }
         }
         c = fgetc(fileO);
@@ -192,6 +239,26 @@ Token *lexer(char name[]) {
     fclose(fileO);
 
     return tokens;
+}
+
+Ast *parser(Token *tokens) {
+    int length = tokensLength(tokens);
+    printf("%d\n", length);
+    Ast *nodes = malloc(sizeof(struct Ast) * length);
+
+    /* -- experimental -- */
+
+    int i = 0;
+    while(!tokens[i].end) {
+        printf("%d\n", tokens[i].id);
+
+        i++;
+    }
+
+    /* -- -- */
+
+    free(tokens);
+    return nodes;
 }
 
 #endif
