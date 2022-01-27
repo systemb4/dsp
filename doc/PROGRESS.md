@@ -51,3 +51,10 @@
 20 January 2022: Began implementing multiple threads but have been running into
     bugs and issues as I am not familiar with this type of "parallel
     programming".
+
+27 January 2022: Rename project to nachtigal just because, idk. Moved everything
+    to one file and decided to try and multi thread when I have written the
+    parser and other elements because trying to multithread the lexer alone was
+    just to much of a headache. Did some non coding work and tried to create a
+    drawing of the abstract data tree so that I could better understand what
+    needed to be done.

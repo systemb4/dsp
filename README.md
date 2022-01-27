@@ -10,9 +10,6 @@ to /usr/include/
 * [ ] implement test.h to check time(length) to of execution
 
 ### lexer
-* [ ] move open FILE seperatly to each thread function
-* [ ] condense thread function params
-* [ ] printArray function length fix (i < " ")
 * [ ] fix free memory (somehow free mem after returning)
 * [ ] function for switch statments
 * [ ] add comparison ops
