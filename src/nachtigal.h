@@ -68,21 +68,34 @@ typedef struct Token {
     bool end;
 } Token;
 
-typedef struct Ast {
-    union {
-        char *name;
-        char *definition;
-    };
-    union {
-        char *valC;
-        double valN;
-    };
-    Token token;
-    int id;
-    struct Ast *nameLink;
-    struct Ast *definitionLink;
+typedef struct Name {
+    char *name;
     enum keyWord type;
-} Ast;
+    struct Definition *defLink;
+    struct Name *nameLink;
+} Name;
+
+typedef struct Definition {
+    union {
+        double numVal;
+        char *stringVal;
+    };
+    struct Definition *defLink;
+} Definition;
+
+typedef union struLink {
+    struct Name *nameLink;
+    struct Definition *defLink;
+} struLink;
+
+void addName(Name *name, void *val) {
+}
+
+void addDefinition(struLink *ptr, void *val) {
+}
+
+char *sort() {
+}
 
 int charCount(FILE *fptr) {
     int chars = 0;
@@ -243,9 +256,9 @@ Token *lexer(char name[]) {
     return tokens;
 }
 
-Ast *parser(Token *tokens) {
+Name *parser(Token *tokens) {
     int length = tokensLength(tokens);
-    Ast *nodes = malloc(sizeof(struct Ast) * length);
+    Name *head = NULL;
 
     /* -- experimental -- */
 
@@ -258,7 +271,7 @@ Ast *parser(Token *tokens) {
     /* -- -- */
 
     free(tokens);
-    return nodes;
+    return head;
 }
 
 #endif
