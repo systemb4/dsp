@@ -11,25 +11,27 @@
 #ifndef __NACHTIGAL_H__
 #define __NACHTIGAL_H__
 
-#define FOREACH_TOKEN(TOKEN) \
-    TOKEN(LPAREN)   \
-    TOKEN(CHAR)     \
-    TOKEN(NUM)      \
-    TOKEN(RPAREN)   \
-    TOKEN(SEMICOL)  \
-    TOKEN(COL)      \
-    TOKEN(COMMA)    \
-    TOKEN(QUOTM)    \
-    TOKEN(QUOTEM)   \
-    TOKEN(LBRACKET) \
-    TOKEN(RBRACKET) \
-    TOKEN(PLUS)     \
-    TOKEN(MINUS)    \
-    TOKEN(FSLASH)   \
-    TOKEN(STAR)     \
-    TOKEN(DOT)      \
-    TOKEN(EXCL)     \
-    TOKEN(END)      \
+#define FOREACH_CHAR(CHAR) \
+    CHAR(NUM)      \
+    CHAR(LETTER)   \
+    CHAR(PLUS)     \
+    CHAR(MINUS)    \
+    CHAR(STAR)     \
+    CHAR(FSLASH)   \
+    CHAR(EXCL)     \
+                   \
+    CHAR(COL)      \
+    CHAR(SEMICOL)  \
+    CHAR(LPAREN)   \
+    CHAR(RPAREN)   \
+    CHAR(LBRACKET) \
+    CHAR(RBRACKET) \
+                   \
+    CHAR(QUOTM)    \
+    CHAR(QUOTEM)   \
+    CHAR(DOT)      \
+    CHAR(COMMA)    \
+    CHAR(END)      \
 
 #define FOREACH_KEYWORD(KEYWORD) \
     KEYWORD(IF) \
@@ -40,12 +42,12 @@
 #define GENERATE_ENUM(ENUM) ENUM,
 #define GENERATE_STRING(STRING) #STRING,
 
-enum tokenType {
-    FOREACH_TOKEN(GENERATE_ENUM)
+enum charType {
+    FOREACH_CHAR(GENERATE_ENUM)
 };
 
-static const char *TOKEN_STRING[] = {
-    FOREACH_TOKEN(GENERATE_STRING)
+static const char *CHAR_STRING[] = {
+    FOREACH_CHAR(GENERATE_STRING)
 };
 
 enum keyWord {
@@ -58,7 +60,7 @@ static const char *KEYWORD_STRING[] = {
 
 typedef struct Token {
     int id;
-    enum tokenType type;
+    enum charType type;
     union {
         char symbol;
         double val;
@@ -111,9 +113,9 @@ void printTokens(Token *tokens) {
 
     for(int i = 0; i < length; i++) {
         printf("ID: %d ", tokens[i].id);
-        printf("Type: %s ", TOKEN_STRING[tokens[i].type]);
+        printf("Type: %s ", CHAR_STRING[tokens[i].type]);
 
-        if(strcmp(TOKEN_STRING[tokens[i].type], TOKEN_STRING[NUM]) == 0)
+        if(strcmp(CHAR_STRING[tokens[i].type], CHAR_STRING[NUM]) == 0)
             printf("Symbol: %f ", tokens[i].val);
         else
             printf("Symbol: %c ", tokens[i].symbol);
@@ -222,7 +224,7 @@ Token *lexer(char name[]) {
             default :
                 if(isalpha(c)) {
                     tokens[i].id = i;
-                    tokens[i].type = CHAR;
+                    tokens[i].type = LETTER;
                     tokens[i].symbol = c;
                 } else if(isdigit(c)) {
                     tokens[i].id = i;
@@ -243,14 +245,12 @@ Token *lexer(char name[]) {
 
 Ast *parser(Token *tokens) {
     int length = tokensLength(tokens);
-    printf("%d\n", length);
     Ast *nodes = malloc(sizeof(struct Ast) * length);
 
     /* -- experimental -- */
 
     int i = 0;
     while(!tokens[i].end) {
-        printf("%d\n", tokens[i].id);
 
         i++;
     }

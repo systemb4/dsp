@@ -13,6 +13,10 @@ to /usr/include/
 * [ ] fix free memory (somehow free mem after returning)
 * [ ] function for switch statments
 * [ ] add comparison ops
+* [ ] fix all chars for tokens (ie. add all needed)
+
+### parser
+* [ ] function(s) to sort when come across " or ( or [
 
 ### documentation
 * [ ] documentation of each function

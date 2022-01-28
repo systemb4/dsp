@@ -57,4 +57,6 @@
     parser and other elements because trying to multithread the lexer alone was
     just to much of a headache. Did some non coding work and tried to create a
     drawing of the abstract data tree so that I could better understand what
-    needed to be done.
+    needed to be done. I was also thinking if it is "cheating" to use just use
+    function like printf written in stdio.h in my langauge. I talked to Mr.
+    Gorman and he said that it was not and that it was "thinking smart."
