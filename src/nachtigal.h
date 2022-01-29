@@ -14,6 +14,8 @@
 #define FOREACH_CHAR(CHAR) \
     CHAR(NUM)      \
     CHAR(LETTER)   \
+    CHAR(END)      \
+                   \
     CHAR(PLUS)     \
     CHAR(MINUS)    \
     CHAR(STAR)     \
@@ -31,13 +33,12 @@
     CHAR(QUOTEM)   \
     CHAR(DOT)      \
     CHAR(COMMA)    \
-    CHAR(END)      \
 
 #define FOREACH_KEYWORD(KEYWORD) \
-    KEYWORD(IF) \
-    KEYWORD(CONST) \
-    KEYWORD(NAME) \
-    KEYWORD(DEF) \
+    KEYWORD(IF)     \
+    KEYWORD(CONST)  \
+    KEYWORD(NAME)   \
+    KEYWORD(DEF)    \
 
 #define GENERATE_ENUM(ENUM) ENUM,
 #define GENERATE_STRING(STRING) #STRING,
@@ -88,7 +89,15 @@ typedef union struLink {
     struct Definition *defLink;
 } struLink;
 
-void addName(Name *name, void *val) {
+void addName(Name *nameLink, char *name, enum keyWord type) {
+    Name *result = malloc(sizeof(Name));
+
+    result->type = type;
+    result->name = name;
+
+    if(nameLink == NULL) {
+        nameLink = result;
+    }
 }
 
 void addDefinition(struLink *ptr, void *val) {
@@ -153,6 +162,41 @@ Token *lexer(char name[]) {
 
     for(int i = 0; i < length; i++) {
         switch(c) {
+            case '+':
+                tokens[i].id = i;
+                tokens[i].type = PLUS;
+                tokens[i].symbol = c;
+                break;
+            case '-':
+                tokens[i].id = i;
+                tokens[i].type = MINUS;
+                tokens[i].symbol = c;
+                break;
+            case '*':
+                tokens[i].id = i;
+                tokens[i].type = STAR;
+                tokens[i].symbol = c;
+                break;
+            case '/':
+                tokens[i].id = i;
+                tokens[i].type = FSLASH;
+                tokens[i].symbol = c;
+                break;
+            case '!':
+                tokens[i].id = i;
+                tokens[i].type = EXCL;
+                tokens[i].symbol = c;
+                break;
+            case ':':
+                tokens[i].id = i;
+                tokens[i].type = COL;
+                tokens[i].symbol = c;
+                break;
+            case ';':
+                tokens[i].id = i;
+                tokens[i].type = SEMICOL;
+                tokens[i].symbol = c;
+                break;
             case '(':
                 tokens[i].id = i;
                 tokens[i].type = LPAREN;
@@ -161,21 +205,6 @@ Token *lexer(char name[]) {
             case ')':
                 tokens[i].id = i;
                 tokens[i].type = RPAREN;
-                tokens[i].symbol = c;
-                break;
-            case ';':
-                tokens[i].id = i;
-                tokens[i].type = SEMICOL;
-                tokens[i].symbol = c;
-                break;
-            case ':':
-                tokens[i].id = i;
-                tokens[i].type = COL;
-                tokens[i].symbol = c;
-                break;
-            case '"':
-                tokens[i].id = i;
-                tokens[i].type = QUOTM;
                 tokens[i].symbol = c;
                 break;
             case '[':
@@ -188,34 +217,9 @@ Token *lexer(char name[]) {
                 tokens[i].type = RBRACKET;
                 tokens[i].symbol = c;
                 break;
-            case '+':
+            case '"':
                 tokens[i].id = i;
-                tokens[i].type = PLUS;
-                tokens[i].symbol = c;
-                break;
-            case '-':
-                tokens[i].id = i;
-                tokens[i].type = MINUS;
-                tokens[i].symbol = c;
-                break;
-            case '/':
-                tokens[i].id = i;
-                tokens[i].type = FSLASH;
-                tokens[i].symbol = c;
-                break;
-            case '*':
-                tokens[i].id = i;
-                tokens[i].type = STAR;
-                tokens[i].symbol = c;
-                break;
-            case ',':
-                tokens[i].id = i;
-                tokens[i].type = COMMA;
-                tokens[i].symbol = c;
-                break;
-            case '.':
-                tokens[i].id = i;
-                tokens[i].type = DOT;
+                tokens[i].type = QUOTM;
                 tokens[i].symbol = c;
                 break;
             case '\'':
@@ -223,11 +227,15 @@ Token *lexer(char name[]) {
                 tokens[i].type = QUOTEM;
                 tokens[i].symbol = c;
                 break;
-            case '!':
+            case '.':
                 tokens[i].id = i;
-                tokens[i].type = EXCL;
+                tokens[i].type = DOT;
                 tokens[i].symbol = c;
                 break;
+            case ',':
+                tokens[i].id = i;
+                tokens[i].type = COMMA;
+                tokens[i].symbol = c;
             case ' ':
                 i--;
                 break;
