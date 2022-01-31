@@ -72,8 +72,8 @@ typedef struct Token {
 typedef struct Name {
     char *name;
     enum keyWord type;
-    struct Definition *defLink;
     struct Name *nameLink;
+    struct Definition *defLink;
 } Name;
 
 typedef struct Definition {
@@ -81,6 +81,7 @@ typedef struct Definition {
         double numVal;
         char *stringVal;
     };
+    struct Name *nameLink;
     struct Definition *defLink;
 } Definition;
 
@@ -89,21 +90,42 @@ typedef union struLink {
     struct Definition *defLink;
 } struLink;
 
-void addName(Name *nameLink, char *name, enum keyWord type) {
+void addName(Name *ptr, char *name, enum keyWord type) {
+    struLink *args = (struLink *)ptr;
     Name *result = malloc(sizeof(Name));
 
     result->type = type;
     result->name = name;
 
-    if(nameLink == NULL) {
-        nameLink = result;
-    }
+    ptr->nameLink = result;
 }
 
 void addDefinition(struLink *ptr, void *val) {
 }
 
-char *sort() {
+char *sort(Token *tokens, int pos) {
+    char *result;
+    enum charType type;
+
+    if(tokens[pos].type == LPAREN) {
+        type = RPAREN;
+    } else if(tokens[pos].type == LBRACKET) {
+        type = RBRACKET;
+    } else if(tokens[pos].type == QUOTM) {
+        type = QUOTM;
+    } else if(tokens[pos].type == QUOTEM) {
+        type = QUOTEM;
+    } else {
+        type = SEMICOL;
+    }
+
+    pos++;
+    for(int i = 1; tokens[pos].type != type; i++) {
+        result[i] = tokens[pos].symbol;
+        pos++;
+    }
+
+    return result;
 }
 
 int charCount(FILE *fptr) {
@@ -144,7 +166,7 @@ void printTokens(Token *tokens) {
 
         printf("\n");
     }
-    // free(tokens);
+    //free(tokens);
 }
 
 Token *lexer(char name[]) {
@@ -266,14 +288,20 @@ Token *lexer(char name[]) {
 
 Name *parser(Token *tokens) {
     int length = tokensLength(tokens);
-    Name *head = NULL;
+    Name *head;
 
     /* -- experimental -- */
 
-    int i = 0;
-    while(!tokens[i].end) {
+    char *hello = "Hello World!";
+    addName(head, hello, NAME);
 
-        i++;
+    head = head->nameLink;
+
+    for(int i = 0; i < length; i++) {
+        if(tokens[i].type == LPAREN) {
+            char *check = sort(tokens, i);
+            printf("%s\n", check);
+        }
     }
 
     /* -- -- */
