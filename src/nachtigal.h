@@ -119,10 +119,9 @@ char *sort(Token *tokens, int pos) {
         type = SEMICOL;
     }
 
-    pos++;
     for(int i = 1; tokens[pos].type != type; i++) {
-        result[i] = tokens[pos].symbol;
         pos++;
+        result[i] = tokens[pos].symbol;
     }
 
     return result;
@@ -297,9 +296,12 @@ Name *parser(Token *tokens) {
 
     head = head->nameLink;
 
+    char *check;
     for(int i = 0; i < length; i++) {
         if(tokens[i].type == LPAREN) {
-            char *check = sort(tokens, i);
+            check = sort(tokens, i);
+            printf("%d\n", strlen(check));
+            i += strlen(check);
             printf("%s\n", check);
         }
     }
