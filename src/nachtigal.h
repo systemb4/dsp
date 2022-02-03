@@ -11,6 +11,8 @@
 #ifndef __NACHTIGAL_H__
 #define __NACHTIGAL_H__
 
+#define NAME_LENGTH 30
+
 #define FOREACH_CHAR(CHAR) \
     CHAR(NUM)      \
     CHAR(LETTER)   \
@@ -35,6 +37,7 @@
     CHAR(COMMA)    \
 
 #define FOREACH_KEYWORD(KEYWORD) \
+    KEYWORD(HEAD)   \
     KEYWORD(IF)     \
     KEYWORD(CONST)  \
     KEYWORD(NAME)   \
@@ -104,7 +107,8 @@ void addDefinition(struLink *ptr, void *val) {
 }
 
 char *sort(Token *tokens, int pos) {
-    char *result;
+    char string[NAME_LENGTH];
+    char *result = string;
     enum charType type;
 
     if(tokens[pos].type == LPAREN) {
@@ -119,10 +123,19 @@ char *sort(Token *tokens, int pos) {
         type = SEMICOL;
     }
 
-    for(int i = 1; tokens[pos].type != type; i++) {
+
+    for(int i = 0; tokens[pos].type != type; i++) {
         pos++;
+
+        if(tokens[pos].type == type) {
+            break;
+        }
+
         result[i] = tokens[pos].symbol;
+        result[i+1] = '\0';
     }
+
+    //printf("%s\n", result);
 
     return result;
 }
@@ -288,27 +301,20 @@ Token *lexer(char name[]) {
 Name *parser(Token *tokens) {
     int length = tokensLength(tokens);
     Name *head;
+    head->type = HEAD;
 
     /* -- experimental -- */
 
-    char *hello = "Hello World!";
-    addName(head, hello, NAME);
-
-    head = head->nameLink;
-
-    char *check;
     for(int i = 0; i < length; i++) {
         if(tokens[i].type == LPAREN) {
-            check = sort(tokens, i);
-            printf("%d\n", strlen(check));
-            i += strlen(check);
-            printf("%s\n", check);
+            addName(head, sort(tokens, i), NAME);
+            head = head->nameLink;
+            i += strlen(sort(tokens, i));
         }
     }
 
     /* -- -- */
 
-    free(tokens);
     return head;
 }
 

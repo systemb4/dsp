@@ -60,3 +60,12 @@
     needed to be done. I was also thinking if it is "cheating" to use just use
     function like printf written in stdio.h in my langauge. I talked to Mr.
     Gorman and he said that it was not and that it was "thinking smart."
+
+3 February 2022: Sort function is working and everything is working so I can put
+    full names into char* variable and store that in a structure but one problem
+    is that as I loop through tokens and the Name *head; I can not go back. I
+    need to find a way to cycle back to the head. I think I may have to change
+    something in the sort function so that it goes through the head first but
+    the value defined in head in the parser function is still kept in it's
+    original state. Maybe like having something like a tmp var that is always
+    equal to a nameLink(Name).
