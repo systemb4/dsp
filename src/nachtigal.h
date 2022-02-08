@@ -70,11 +70,9 @@ typedef struct Token {
 } Token;
 
 typedef struct Name {
-    int id;
     char *name;
     enum keyWord type;
     struct Name *nameLink;
-    struct Name *nameLinkRev;
     struct Definition *defLink;
 } Name;
 
@@ -84,8 +82,7 @@ typedef struct Definition {
         char *stringVal;
     };
     /*struct Name *nameLink;
-    struct Definition *defLink;
-    struct Definition *defLinkRev;*/
+    struct Definition *defLink;*/
 } Definition;
 
 typedef union struLink {
@@ -100,7 +97,6 @@ void addName(Name *head, char *name, enum keyWord type) {
     result->type = type;
     result->name = name;
     result->nameLink = NULL;
-    result->nameLinkRev = head;
     result->defLink = NULL;
 
     head->nameLink = result;
@@ -133,18 +129,18 @@ char *sort(Token *tokens, int pos) {
     } else if(tokens[pos].type == QUOTEM) {
         type = QUOTEM;
     } else {
-        type = SEMICOL;
+        return result;
     }
 
     for(int i = 0; tokens[pos].type != type; i++) {
         pos++;
 
         if(tokens[pos].type == type) {
-            break;
+            return result;
         }
 
-        result[i] = tokens[pos].symbol;
-        result[i+1] = '\0';
+        string[i] = tokens[pos].symbol;
+        string[i+1] = '\0';
     }
 
     return result;
@@ -320,21 +316,26 @@ Name *parser(Token *tokens) {
 
     /* -- experimental -- */
 
+    char *tmp;
     for(int i = 0; i < length; i++) {
         if(tokens[i].type == LPAREN) {
-            addName(head, sort(tokens, i), NAME);
-            head->id = i;
-            i += strlen(sort(tokens, i));
+            tmp = sort(tokens, i);
+            addName(head, tmp, NAME);
+            //printf("%c - ", sort(tokens, i)[1]);
+            //printf("%d\n", sizeof(sort(tokens, i)));
+            i += strlen(tmp);
         }
-    }
-
-    while(head->type != HEAD) {
-        printf("foo");
-        head = head->nameLinkRev;
     }
 
     printf("%s\n", KEYWORD_STRING[head->type]);
     printf("%s\n", head->name);
+
+    head = head->nameLink;
+
+    /*
+    for(int i = 0; i < strlen(head->name); i++) {
+        printf("%c\n", head->name[i]);
+    }*/
 
     /* -- -- */
 

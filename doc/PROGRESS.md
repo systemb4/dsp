@@ -69,3 +69,10 @@
     the value defined in head in the parser function is still kept in it's
     original state. Maybe like having something like a tmp var that is always
     equal to a nameLink(Name).
+
+8 February 2022: Problem so far is printing the char pointer gotten from the
+    sort function. Turns out that the going back through the list did not have
+    to be done. Printing normally assigned names to a node works but using the
+    sort function and entering a char pointer into the addName function returned
+    from the sort function is not printable (only prints blank space). Type is
+    correct though.
