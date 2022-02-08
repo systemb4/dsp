@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-lpthread
+CFLAGS=#-lpthread
 
 output: main.o
 	$(CC) $(CFLAGS) main.o -o output

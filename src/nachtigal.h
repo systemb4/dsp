@@ -11,8 +11,6 @@
 #ifndef __NACHTIGAL_H__
 #define __NACHTIGAL_H__
 
-#define NAME_LENGTH 30
-
 #define FOREACH_CHAR(CHAR) \
     CHAR(NUM)      \
     CHAR(LETTER)   \
@@ -38,7 +36,6 @@
 
 #define FOREACH_KEYWORD(KEYWORD) \
     KEYWORD(HEAD)   \
-    KEYWORD(IF)     \
     KEYWORD(CONST)  \
     KEYWORD(NAME)   \
     KEYWORD(DEF)    \
@@ -73,9 +70,11 @@ typedef struct Token {
 } Token;
 
 typedef struct Name {
+    int id;
     char *name;
     enum keyWord type;
     struct Name *nameLink;
+    struct Name *nameLinkRev;
     struct Definition *defLink;
 } Name;
 
@@ -84,8 +83,9 @@ typedef struct Definition {
         double numVal;
         char *stringVal;
     };
-    struct Name *nameLink;
+    /*struct Name *nameLink;
     struct Definition *defLink;
+    struct Definition *defLinkRev;*/
 } Definition;
 
 typedef union struLink {
@@ -93,21 +93,34 @@ typedef union struLink {
     struct Definition *defLink;
 } struLink;
 
-void addName(Name *ptr, char *name, enum keyWord type) {
-    struLink *args = (struLink *)ptr;
+void addName(Name *head, char *name, enum keyWord type) {
     Name *result = malloc(sizeof(Name));
+    Name *lastNode = head;
 
     result->type = type;
     result->name = name;
+    result->nameLink = NULL;
+    result->nameLinkRev = head;
+    result->defLink = NULL;
 
-    ptr->nameLink = result;
+    head->nameLink = result;
+
+    if(head == NULL) {
+        head = result;
+    } else {
+        while(lastNode->nameLink != NULL) {
+            lastNode = lastNode->nameLink;
+        }
+
+        lastNode->nameLink = result;
+    }
 }
 
 void addDefinition(struLink *ptr, void *val) {
 }
 
 char *sort(Token *tokens, int pos) {
-    char string[NAME_LENGTH];
+    char string[30];
     char *result = string;
     enum charType type;
 
@@ -133,8 +146,6 @@ char *sort(Token *tokens, int pos) {
         result[i] = tokens[pos].symbol;
         result[i+1] = '\0';
     }
-
-    //printf("%s\n", result);
 
     return result;
 }
@@ -177,7 +188,6 @@ void printTokens(Token *tokens) {
 
         printf("\n");
     }
-    //free(tokens);
 }
 
 Token *lexer(char name[]) {
@@ -269,6 +279,7 @@ Token *lexer(char name[]) {
                 tokens[i].id = i;
                 tokens[i].type = COMMA;
                 tokens[i].symbol = c;
+                break;
             case ' ':
                 i--;
                 break;
@@ -280,6 +291,7 @@ Token *lexer(char name[]) {
                     tokens[i].id = i;
                     tokens[i].type = LETTER;
                     tokens[i].symbol = c;
+                    break;
                 } else if(isdigit(c)) {
                     tokens[i].id = i;
                     tokens[i].type = NUM;
@@ -288,6 +300,7 @@ Token *lexer(char name[]) {
                 } else if(c == EOF) {
                     tokens[i].id = i;
                     tokens[i].end = true;
+                    break;
                 }
         }
         c = fgetc(fileO);
@@ -301,15 +314,27 @@ Name *parser(Token *tokens) {
     int length = tokensLength(tokens);
     Name *head;
     head->type = HEAD;
+    head->nameLink = NULL;
+    char *hello = "Hello World";
+    head->name = hello;
 
     /* -- experimental -- */
 
     for(int i = 0; i < length; i++) {
         if(tokens[i].type == LPAREN) {
             addName(head, sort(tokens, i), NAME);
+            head->id = i;
             i += strlen(sort(tokens, i));
         }
     }
+
+    while(head->type != HEAD) {
+        printf("foo");
+        head = head->nameLinkRev;
+    }
+
+    printf("%s\n", KEYWORD_STRING[head->type]);
+    printf("%s\n", head->name);
 
     /* -- -- */
 
