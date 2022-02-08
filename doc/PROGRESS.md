@@ -75,4 +75,4 @@
     to be done. Printing normally assigned names to a node works but using the
     sort function and entering a char pointer into the addName function returned
     from the sort function is not printable (only prints blank space). Type is
-    correct though.
+    correct though. Basically sort works but I can't print out char *name.

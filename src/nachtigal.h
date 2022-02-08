@@ -117,7 +117,6 @@ void addDefinition(struLink *ptr, void *val) {
 
 char *sort(Token *tokens, int pos) {
     char string[30];
-    char *result = string;
     enum charType type;
 
     if(tokens[pos].type == LPAREN) {
@@ -129,19 +128,22 @@ char *sort(Token *tokens, int pos) {
     } else if(tokens[pos].type == QUOTEM) {
         type = QUOTEM;
     } else {
-        return result;
+        type = SEMICOL;
     }
 
     for(int i = 0; tokens[pos].type != type; i++) {
         pos++;
 
         if(tokens[pos].type == type) {
-            return result;
+            break;
         }
 
         string[i] = tokens[pos].symbol;
         string[i+1] = '\0';
     }
+
+    char *result = string;
+    //printf("%s\n", result);
 
     return result;
 }
@@ -311,8 +313,6 @@ Name *parser(Token *tokens) {
     Name *head;
     head->type = HEAD;
     head->nameLink = NULL;
-    char *hello = "Hello World";
-    head->name = hello;
 
     /* -- experimental -- */
 
@@ -321,21 +321,9 @@ Name *parser(Token *tokens) {
         if(tokens[i].type == LPAREN) {
             tmp = sort(tokens, i);
             addName(head, tmp, NAME);
-            //printf("%c - ", sort(tokens, i)[1]);
-            //printf("%d\n", sizeof(sort(tokens, i)));
             i += strlen(tmp);
         }
     }
-
-    printf("%s\n", KEYWORD_STRING[head->type]);
-    printf("%s\n", head->name);
-
-    head = head->nameLink;
-
-    /*
-    for(int i = 0; i < strlen(head->name); i++) {
-        printf("%c\n", head->name[i]);
-    }*/
 
     /* -- -- */
 
