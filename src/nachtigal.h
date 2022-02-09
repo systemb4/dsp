@@ -89,12 +89,12 @@ typedef union struLink {
     struct Definition *defLink;
 } struLink;
 
-void addName(Name *head, char *word, enum keyWord type) {
+void addName(Name *head, char *name, enum keyWord type) {
     Name *result = malloc(sizeof(Name));
     Name *lastNode = head;
 
     result->type = type;
-    result->name = word;
+    result->name = name;
     result->nameLink = NULL;
     result->defLink = NULL;
 
@@ -107,13 +107,15 @@ void addName(Name *head, char *word, enum keyWord type) {
 
         lastNode->nameLink = result;
     }
+
+    free(result);
 }
 
 void addDefinition(struLink *ptr, void *val) {
 }
 
 char *sort(Token *tokens, int pos) {
-    char *result = malloc(30);
+    char *result = malloc(sizeof(char) * 15);
     enum charType type;
 
     if(tokens[pos].type == LPAREN) {
@@ -159,7 +161,7 @@ int charCount(FILE *fptr) {
 
 int tokensLength(Token *tokens) {
     int i = 0;
-    while(!tokens[i].end) {
+    while(tokens[i].end != 1) {
         i++;
     }
 
@@ -201,76 +203,91 @@ Token *lexer(char name[]) {
                 tokens[i].id = i;
                 tokens[i].type = PLUS;
                 tokens[i].symbol = c;
+                tokens[i].end = 0;
                 break;
             case '-':
                 tokens[i].id = i;
                 tokens[i].type = MINUS;
                 tokens[i].symbol = c;
+                tokens[i].end = 0;
                 break;
             case '*':
                 tokens[i].id = i;
                 tokens[i].type = STAR;
                 tokens[i].symbol = c;
+                tokens[i].end = 0;
                 break;
             case '/':
                 tokens[i].id = i;
                 tokens[i].type = FSLASH;
                 tokens[i].symbol = c;
+                tokens[i].end = 0;
                 break;
             case '!':
                 tokens[i].id = i;
                 tokens[i].type = EXCL;
                 tokens[i].symbol = c;
+                tokens[i].end = 0;
                 break;
             case ':':
                 tokens[i].id = i;
                 tokens[i].type = COL;
                 tokens[i].symbol = c;
+                tokens[i].end = 0;
                 break;
             case ';':
                 tokens[i].id = i;
                 tokens[i].type = SEMICOL;
                 tokens[i].symbol = c;
+                tokens[i].end = 0;
                 break;
             case '(':
                 tokens[i].id = i;
                 tokens[i].type = LPAREN;
                 tokens[i].symbol = c;
+                tokens[i].end = 0;
                 break;
             case ')':
                 tokens[i].id = i;
                 tokens[i].type = RPAREN;
                 tokens[i].symbol = c;
+                tokens[i].end = 0;
                 break;
             case '[':
                 tokens[i].id = i;
                 tokens[i].type = LBRACKET;
                 tokens[i].symbol = c;
+                tokens[i].end = 0;
                 break;
             case ']':
                 tokens[i].id = i;
                 tokens[i].type = RBRACKET;
                 tokens[i].symbol = c;
+                tokens[i].end = 0;
                 break;
             case '"':
                 tokens[i].id = i;
                 tokens[i].type = QUOTM;
                 tokens[i].symbol = c;
+                tokens[i].end = 0;
                 break;
             case '\'':
                 tokens[i].id = i;
                 tokens[i].type = QUOTEM;
                 tokens[i].symbol = c;
+                tokens[i].end = 0;
                 break;
             case '.':
                 tokens[i].id = i;
                 tokens[i].type = DOT;
                 tokens[i].symbol = c;
+                tokens[i].end = 0;
                 break;
             case ',':
                 tokens[i].id = i;
                 tokens[i].type = COMMA;
                 tokens[i].symbol = c;
+                tokens[i].end = 0;
                 break;
             case ' ':
                 i--;
@@ -283,11 +300,13 @@ Token *lexer(char name[]) {
                     tokens[i].id = i;
                     tokens[i].type = LETTER;
                     tokens[i].symbol = c;
+                    tokens[i].end = 0;
                     break;
                 } else if(isdigit(c)) {
                     tokens[i].id = i;
                     tokens[i].type = NUM;
                     tokens[i].val = c - '0';
+                    tokens[i].end = 0;
                     break;
                 } else if(c == EOF) {
                     tokens[i].id = i;
@@ -307,12 +326,12 @@ Name *parser(Token *tokens) {
     Name *head = NULL;
 
     char *tmp;
-    for(int i = 0; i < length; i++) {
+    for(int i = 0; i < 141; i++) {
         if(tokens[i].type == LPAREN) {
             tmp = sort(tokens, i);
             addName(head, tmp, NAME);
-            printf("%s\n", tmp);
             i += strlen(tmp);
+            free(tmp);
         }
     }
 
