@@ -6,7 +6,6 @@
 #include <string.h>
 #include <pthread.h>
 #include <ctype.h>
-#include <stdbool.h>
 
 #ifndef __NACHTIGAL_H__
 #define __NACHTIGAL_H__
@@ -66,7 +65,7 @@ typedef struct Token {
         char symbol;
         double val;
     };
-    bool end;
+    int end;
 } Token;
 
 typedef struct Name {
@@ -90,16 +89,14 @@ typedef union struLink {
     struct Definition *defLink;
 } struLink;
 
-void addName(Name *head, char *name, enum keyWord type) {
+void addName(Name *head, char *word, enum keyWord type) {
     Name *result = malloc(sizeof(Name));
     Name *lastNode = head;
 
     result->type = type;
-    result->name = name;
+    result->name = word;
     result->nameLink = NULL;
     result->defLink = NULL;
-
-    head->nameLink = result;
 
     if(head == NULL) {
         head = result;
@@ -116,7 +113,7 @@ void addDefinition(struLink *ptr, void *val) {
 }
 
 char *sort(Token *tokens, int pos) {
-    char string[30];
+    char *result = malloc(30);
     enum charType type;
 
     if(tokens[pos].type == LPAREN) {
@@ -138,12 +135,9 @@ char *sort(Token *tokens, int pos) {
             break;
         }
 
-        string[i] = tokens[pos].symbol;
-        string[i+1] = '\0';
+        result[i] = tokens[pos].symbol;
+        result[i+1] = '\0';
     }
-
-    char *result = string;
-    //printf("%s\n", result);
 
     return result;
 }
@@ -297,7 +291,7 @@ Token *lexer(char name[]) {
                     break;
                 } else if(c == EOF) {
                     tokens[i].id = i;
-                    tokens[i].end = true;
+                    tokens[i].end = 1;
                     break;
                 }
         }
@@ -310,22 +304,17 @@ Token *lexer(char name[]) {
 
 Name *parser(Token *tokens) {
     int length = tokensLength(tokens);
-    Name *head;
-    head->type = HEAD;
-    head->nameLink = NULL;
-
-    /* -- experimental -- */
+    Name *head = NULL;
 
     char *tmp;
     for(int i = 0; i < length; i++) {
         if(tokens[i].type == LPAREN) {
             tmp = sort(tokens, i);
             addName(head, tmp, NAME);
+            printf("%s\n", tmp);
             i += strlen(tmp);
         }
     }
-
-    /* -- -- */
 
     return head;
 }
