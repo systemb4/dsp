@@ -139,6 +139,7 @@ char *sort(Token *tokens, int pos) {
 
         result[i] = tokens[pos].symbol;
         result[i+1] = '\0';
+
     }
 
     return result;
@@ -324,6 +325,9 @@ Token *lexer(char name[]) {
 Name *parser(Token *tokens) {
     int length = tokensLength(tokens);
     Name *head = NULL;
+    char *str = "Hello World";
+    addName(head, str, NAME);
+    printf("%c\n", head->name[1]);
 
     char *tmp;
     for(int i = 0; i < 141; i++) {
