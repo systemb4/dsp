@@ -8,9 +8,12 @@ int main(int argc, char *argv[]) {
     clock_t begin = clock();
 
     Token *tokens = lexer(argv[1]);
+
     Name *head = parser(tokens);
+    printNames(head);
+
     free(tokens);
-    free(head);
+    //free(head);
 
     clock_t end = clock();
 

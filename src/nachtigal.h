@@ -89,17 +89,17 @@ typedef union struLink {
     struct Definition *defLink;
 } struLink;
 
-void addName(Name *head, char *name, enum keyWord type) {
+void addName(Name **head, char **name, enum keyWord type) {
     Name *result = malloc(sizeof(Name));
-    Name *lastNode = head;
+    Name *lastNode = *head;
 
     result->type = type;
-    result->name = name;
+    result->name = *name;
     result->nameLink = NULL;
     result->defLink = NULL;
 
-    if(head == NULL) {
-        head = result;
+    if(*head == NULL) {
+        *head = result;
     } else {
         while(lastNode->nameLink != NULL) {
             lastNode = lastNode->nameLink;
@@ -107,8 +107,6 @@ void addName(Name *head, char *name, enum keyWord type) {
 
         lastNode->nameLink = result;
     }
-
-    free(result);
 }
 
 void addDefinition(struLink *ptr, void *val) {
@@ -322,20 +320,26 @@ Token *lexer(char name[]) {
     return tokens;
 }
 
+void printNames(Name *head) {
+    Name *tmp = head;
+
+    while(tmp != NULL) {
+        printf("%s - ", tmp->name);
+        printf("%s\n", KEYWORD_STRING[tmp->type]);
+        tmp = tmp->nameLink;
+    }
+}
+
 Name *parser(Token *tokens) {
     int length = tokensLength(tokens);
     Name *head = NULL;
-    char *str = "Hello World";
-    addName(head, str, NAME);
-    printf("%c\n", head->name[1]);
 
     char *tmp;
     for(int i = 0; i < 141; i++) {
         if(tokens[i].type == LPAREN) {
             tmp = sort(tokens, i);
-            addName(head, tmp, NAME);
+            addName(&head, &tmp, NAME);
             i += strlen(tmp);
-            free(tmp);
         }
     }
 
