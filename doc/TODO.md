@@ -1,5 +1,4 @@
 # do
-* sort function for all of the tokens
 * addDefinition function for [] '' ""
 * documentation of each function line by line comments
 * function for switch statments - lexer
@@ -12,5 +11,6 @@
 * documentation of how it works
 
 # review
+* sort function for all of the tokens
 
 # done

@@ -1,5 +1,6 @@
 CC=gcc
 CFLAGS=#-lpthread
+INPUT=input/list.nagl
 
 output: main.o
 	$(CC) $(CFLAGS) main.o -o output

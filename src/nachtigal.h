@@ -84,10 +84,10 @@ typedef struct Definition {
     struct Definition *defLink;*/
 } Definition;
 
-typedef union struLink {
-    struct Name *nameLink;
-    struct Definition *defLink;
-} struLink;
+union inVal {
+    double num;
+    char *str;
+};
 
 void addName(Name **head, char **name, enum keyWord type) {
     Name *result = malloc(sizeof(Name));
@@ -109,7 +109,7 @@ void addName(Name **head, char **name, enum keyWord type) {
     }
 }
 
-void addDefinition(struLink *ptr, void *val) {
+void addDefinition(Definition **head, union inVal val, enum keyWord type) {
 }
 
 char *sort(Token *tokens, int pos) {
@@ -118,12 +118,6 @@ char *sort(Token *tokens, int pos) {
 
     if(tokens[pos].type == LPAREN) {
         type = RPAREN;
-    } else if(tokens[pos].type == LBRACKET) {
-        type = RBRACKET;
-    } else if(tokens[pos].type == QUOTM) {
-        type = QUOTM;
-    } else if(tokens[pos].type == QUOTEM) {
-        type = QUOTEM;
     } else {
         type = SEMICOL;
     }
@@ -335,7 +329,7 @@ Name *parser(Token *tokens) {
     Name *head = NULL;
 
     char *tmp;
-    for(int i = 0; i < 141; i++) {
+    for(int i = 0; i < length; i++) {
         if(tokens[i].type == LPAREN) {
             tmp = sort(tokens, i);
             addName(&head, &tmp, NAME);
