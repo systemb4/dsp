@@ -4,7 +4,6 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <pthread.h>
 #include <ctype.h>
 
 #ifndef __NACHTIGAL_H__
@@ -80,8 +79,8 @@ typedef struct Definition {
         double numVal;
         char *stringVal;
     };
-    /*struct Name *nameLink;
-    struct Definition *defLink;*/
+    enum keyWord type;
+    struct Definition *defLink;
 } Definition;
 
 union inVal {
@@ -109,7 +108,29 @@ void addName(Name **head, char **name, enum keyWord type) {
     }
 }
 
-void addDefinition(Definition **head, union inVal val, enum keyWord type) {
+void addDefinition(Name **head, /* union inVal val*/ char **val, enum keyWord type) {
+    Definition *result = malloc(sizeof(Definition));
+    Name *lastNode = *head;
+    Definition *place = NULL;
+
+    result->type = type;
+    result->stringVal = *val;
+    result->defLink = NULL;
+
+    // be able to add def to def
+    if(*head == NULL) {
+        fprintf(stderr, "Can not set definition equal to a name!");
+    } else {
+        while(lastNode->nameLink != NULL) {
+            lastNode = lastNode->nameLink;
+        }
+
+        while(lastNode->defLink != NULL) {
+            place = lastNode->defLink;
+        }
+
+        lastNode->defLink = result;
+    }
 }
 
 char *sort(Token *tokens, int pos) {
@@ -118,7 +139,13 @@ char *sort(Token *tokens, int pos) {
 
     if(tokens[pos].type == LPAREN) {
         type = RPAREN;
-    } else {
+    } else if(tokens[pos].type == LBRACKET) {
+        type = RBRACKET;
+    } /*else if(tokens[pos].type == QUOTEM) {
+        type = QUOTEM;
+    } else if(tokens[pos].type == QUOTM) {
+        type = QUOTM;
+    } */else {
         type = SEMICOL;
     }
 
@@ -319,7 +346,7 @@ void printNames(Name *head) {
 
     while(tmp != NULL) {
         printf("%s - ", tmp->name);
-        printf("%s\n", KEYWORD_STRING[tmp->type]);
+        printf("%s\n", tmp->defLink->stringVal);
         tmp = tmp->nameLink;
     }
 }
@@ -333,6 +360,10 @@ Name *parser(Token *tokens) {
         if(tokens[i].type == LPAREN) {
             tmp = sort(tokens, i);
             addName(&head, &tmp, NAME);
+            i += strlen(tmp);
+        } else if(tokens[i].type == LBRACKET) {
+            tmp = sort(tokens, i);
+            addDefinition(&head, &tmp, DEF);
             i += strlen(tmp);
         }
     }

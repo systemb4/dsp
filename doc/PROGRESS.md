@@ -76,3 +76,6 @@
     sort function and entering a char pointer into the addName function returned
     from the sort function is not printable (only prints blank space). Type is
     correct though. Basically sort works but I can't print out char *name.
+
+16 February 2022: Orginizing and working through some problems so that I can get
+    back to full time work.
