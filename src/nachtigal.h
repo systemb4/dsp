@@ -145,9 +145,9 @@ char *sort(Token *tokens, int pos) {
         type = QUOTEM;
     } else if(tokens[pos].type == QUOTM) {
         type = QUOTM;
-    } */else {
+    } else {
         type = SEMICOL;
-    }
+    }*/
 
     for(int i = 0; tokens[pos].type != type; i++) {
         pos++;
@@ -156,10 +156,18 @@ char *sort(Token *tokens, int pos) {
             break;
         }
 
-        result[i] = tokens[pos].symbol;
+        // choose between symbol and valin union
+        // broken rn
+        if(tokens[pos].symbol == NULL) {
+            result[i] = tokens[pos].val;
+        } else {
+            result[i] = tokens[pos].symbol;
+        }
         result[i+1] = '\0';
 
     }
+
+    printf("%s\n", result);
 
     return result;
 }
@@ -363,7 +371,7 @@ Name *parser(Token *tokens) {
             i += strlen(tmp);
         } else if(tokens[i].type == LBRACKET) {
             tmp = sort(tokens, i);
-            addDefinition(&head, &tmp, DEF);
+            addName(&head, &tmp, DEF);
             i += strlen(tmp);
         }
     }

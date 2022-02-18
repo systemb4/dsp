@@ -79,3 +79,13 @@
 
 16 February 2022: Orginizing and working through some problems so that I can get
     back to full time work.
+
+18 February 2022: Two major obsticles. The first one is the abstact syntax tree.
+    Currently it is more an abstract syntax "list" rather than tree and that
+    needs to be fixed but I don't yet know how. Secondly is the problem of clean
+    code and making the project even with only 300 lines more readable and
+    quicker to execute. With the AST still in progress and one more big peice to
+    code plus trying to multi thread the lexer and parser, the code base will
+    get a little muddy and slow and so I need to also focus on optimizing the
+    code for both the user and any coder. I need to use a name scheme and split
+    up the lexer and pareser and other peices maybe?
