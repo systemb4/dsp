@@ -84,10 +84,11 @@ typedef struct Definition {
     struct Definition *defLink;
 } Definition;
 
-union inVal {
-    double num;
-    char *str;
-};
+double strToDb(char *str) {
+    double result 0.0;
+
+    return result;
+}
 
 void addName(Name **head, char **name, enum keyWord type) {
     Name *result = malloc(sizeof(Name));

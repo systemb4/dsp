@@ -89,3 +89,11 @@
     get a little muddy and slow and so I need to also focus on optimizing the
     code for both the user and any coder. I need to use a name scheme and split
     up the lexer and pareser and other peices maybe?
+
+22 February 2022: addDefinition works now with the sort function. Will need to
+    create a function to convert string to double. What I want to do next is
+    rebuild the ast. I think it will still be linear but name and definition are
+    basically the same now. Also want a result thing in name so that if I am
+    adding numbers or strings, they will be stored in a result variable in a
+    name node. There will be only one name node per "idk what" and then alot of
+    definitions to each name node. Name nodes will be linear for now.

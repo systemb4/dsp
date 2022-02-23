@@ -6,9 +6,8 @@
 
 * function for switch statments - lexer
 * add comparison ops - lexer
+* string to double function
 
-* addDef function get working
-* sor function works for both definitions and names
 * structure AST so that it can be more widely implementable
     * be able to link more defs to name but no def should be linked to def and
       no name should be linked to def
@@ -19,5 +18,7 @@
 
 # review
 * sort function for all of the tokens
+* addDef function get working
+* sor function works for both definitions and names
 
 # done
