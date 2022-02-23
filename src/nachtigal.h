@@ -13,6 +13,7 @@
     CHAR(NUM)      \
     CHAR(LETTER)   \
     CHAR(END)      \
+    CHAR(SPACE)    \
                    \
     CHAR(PLUS)     \
     CHAR(MINUS)    \
@@ -62,7 +63,7 @@ typedef struct Token {
     enum charType type;
     union {
         char symbol;
-        double val;
+        int val;
     };
     int end;
 } Token;
@@ -158,16 +159,16 @@ char *sort(Token *tokens, int pos) {
 
         // choose between symbol and valin union
         // broken rn
-        if(tokens[pos].symbol == NULL) {
-            result[i] = tokens[pos].val;
+
+        if(tokens[pos].type == NUM) {
+            result[i] = tokens[pos].val + '0';
         } else {
             result[i] = tokens[pos].symbol;
         }
+
         result[i+1] = '\0';
 
     }
-
-    printf("%s\n", result);
 
     return result;
 }
@@ -371,7 +372,7 @@ Name *parser(Token *tokens) {
             i += strlen(tmp);
         } else if(tokens[i].type == LBRACKET) {
             tmp = sort(tokens, i);
-            addName(&head, &tmp, DEF);
+            addDefinition(&head, &tmp, DEF);
             i += strlen(tmp);
         }
     }
