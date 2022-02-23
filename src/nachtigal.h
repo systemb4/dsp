@@ -85,7 +85,7 @@ typedef struct Definition {
 } Definition;
 
 double strToDb(char *str) {
-    double result 0.0;
+    double result = 0.0;
 
     return result;
 }

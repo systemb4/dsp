@@ -2,5 +2,10 @@ nachtigal
 variable based programming language, kind of just an interpreter but not
 
 installation
+currently still in development so there is nothing really to install.
 currently manual, you can build with make, but you have to copy the lib manually
-to /usr/include/
+    to /usr/include/
+Will be installed as <nachtigal> to system. File extension will be <.nagl> and
+    source code will be installed to system so that the user can edit and change
+    the code as wanted.
+Independent Student Project (ISP) for The John Cooper School
