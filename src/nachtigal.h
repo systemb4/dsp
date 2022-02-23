@@ -110,7 +110,7 @@ void addName(Name **head, char **name, enum keyWord type) {
     }
 }
 
-void addDefinition(Name **head, /* union inVal val*/ char **val, enum keyWord type) {
+void addDefinition(Name **head, char **val, enum keyWord type) {
     Definition *result = malloc(sizeof(Definition));
     Name *lastNode = *head;
     Definition *place = NULL;
@@ -143,13 +143,9 @@ char *sort(Token *tokens, int pos) {
         type = RPAREN;
     } else if(tokens[pos].type == LBRACKET) {
         type = RBRACKET;
-    } /*else if(tokens[pos].type == QUOTEM) {
-        type = QUOTEM;
-    } else if(tokens[pos].type == QUOTM) {
-        type = QUOTM;
     } else {
         type = SEMICOL;
-    }*/
+    }
 
     for(int i = 0; tokens[pos].type != type; i++) {
         pos++;
@@ -157,9 +153,6 @@ char *sort(Token *tokens, int pos) {
         if(tokens[pos].type == type) {
             break;
         }
-
-        // choose between symbol and valin union
-        // broken rn
 
         if(tokens[pos].type == NUM) {
             result[i] = tokens[pos].val + '0';
