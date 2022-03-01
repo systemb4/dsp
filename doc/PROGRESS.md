@@ -97,3 +97,9 @@
     adding numbers or strings, they will be stored in a result variable in a
     name node. There will be only one name node per "idk what" and then alot of
     definitions to each name node. Name nodes will be linear for now.
+
+23 February 2022: One problem is that I want to be able to have infinate
+    definition children to each name node, but I don't know if that is possible.
+    Maybe I make the def child a linked list that is ordered by order of
+    operations. ie. Go through a the list between [] and check for * then / then
+    - then + and if none it just sets var equal to name.

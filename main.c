@@ -10,8 +10,7 @@ int main(int argc, char *argv[]) {
     Token *tokens = lexer(argv[1]);
     Name *head = parser(tokens);
 
-    printTokens(tokens);
-    printf("\n");
+    //printTokens(tokens);
     printNames(head);
 
     free(tokens);
