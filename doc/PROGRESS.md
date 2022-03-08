@@ -103,3 +103,6 @@
     Maybe I make the def child a linked list that is ordered by order of
     operations. ie. Go through a the list between [] and check for * then / then
     - then + and if none it just sets var equal to name.
+
+8 March 2022: Moving on, will just change numbers when time comes. Need to now
+    restructure AST and be able to loop through everything.

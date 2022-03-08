@@ -85,7 +85,7 @@ typedef struct Definition {
     struct Definition *defLink;
 } Definition;
 
-double strToDb(char **str) {
+double strToDb(char *str) {
     double result;
     char *ptr_end;
 
@@ -123,8 +123,7 @@ void addDefinition(Name **head, char **val, enum keyWord type) {
     result->defLink = NULL;
 
     /* strToDb currently broken bc of pointers */
-    result->numVal = strToDb(val);
-    //result->stringVal = *val;
+    result->stringVal = *val;
 
     if(*head == NULL) {
         fprintf(stderr, "Can not set definition equal to a name!");
