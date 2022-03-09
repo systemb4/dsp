@@ -1,13 +1,13 @@
 /*
- * Author: Lukas Nitzsche
+ * lexer.h
  */
 
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 
-#ifndef __NACHTIGAL_H__
-#define __NACHTIGAL_H__
+#ifndef __LEXER_H__
+#define __LEXER_H__
 
 #define FOREACH_CHAR(CHAR) \
     CHAR(NUM)      \
@@ -33,12 +33,6 @@
     CHAR(DOT)      \
     CHAR(COMMA)    \
 
-#define FOREACH_KEYWORD(KEYWORD) \
-    KEYWORD(HEAD)   \
-    KEYWORD(CONST)  \
-    KEYWORD(NAME)   \
-    KEYWORD(DEF)    \
-
 #define GENERATE_ENUM(ENUM) ENUM,
 #define GENERATE_STRING(STRING) #STRING,
 
@@ -50,14 +44,6 @@ static const char *CHAR_STRING[] = {
     FOREACH_CHAR(GENERATE_STRING)
 };
 
-enum keyWord {
-    FOREACH_KEYWORD(GENERATE_ENUM)
-};
-
-static const char *KEYWORD_STRING[] = {
-    FOREACH_KEYWORD(GENERATE_STRING)
-};
-
 typedef struct Token {
     int id;
     enum charType type;
@@ -67,110 +53,6 @@ typedef struct Token {
     };
     int end;
 } Token;
-
-typedef struct Name {
-    char *name;
-    enum keyWord type;
-    struct Name *nameLink;
-    struct Definition *defLink;
-} Name;
-
-typedef struct Definition {
-    char op;
-    union {
-        double numVal;
-        char *stringVal;
-    };
-    enum keyWord type;
-    struct Definition *defLink;
-} Definition;
-
-double strToDb(char *str) {
-    double result;
-    char *ptr_end;
-
-    result = strtod(str, &ptr_end);
-
-    return result;
-}
-
-void addName(Name **head, char **name, enum keyWord type) {
-    Name *result = malloc(sizeof(Name));
-    Name *lastNode = *head;
-
-    result->type = type;
-    result->name = *name;
-    result->nameLink = NULL;
-    result->defLink = NULL;
-
-    if(*head == NULL) {
-        *head = result;
-    } else {
-        while(lastNode->nameLink != NULL) {
-            lastNode = lastNode->nameLink;
-        }
-
-        lastNode->nameLink = result;
-    }
-}
-
-void addDefinition(Name **head, char **val, enum keyWord type) {
-    Definition *result = malloc(sizeof(Definition));
-    Name *lastNode = *head;
-    Definition *place = NULL;
-
-    result->type = type;
-    result->defLink = NULL;
-
-    /* strToDb currently broken bc of pointers */
-    result->stringVal = *val;
-
-    if(*head == NULL) {
-        fprintf(stderr, "Can not set definition equal to a name!");
-    } else {
-        while(lastNode->nameLink != NULL) {
-            lastNode = lastNode->nameLink;
-        }
-
-        while(lastNode->defLink != NULL) {
-            place = lastNode->defLink;
-        }
-
-        lastNode->defLink = result;
-    }
-}
-
-char *sort(Token *tokens, int pos) {
-    char *result = malloc(sizeof(char) * 15);
-    enum charType type;
-
-    if(tokens[pos].type == LPAREN) {
-        type = RPAREN;
-    } else if(tokens[pos].type == LBRACKET) {
-        type = RBRACKET;
-    } else {
-        type = SEMICOL;
-    }
-
-    for(int i = 0; tokens[pos].type != type; i++) {
-        pos++;
-
-        if(tokens[pos].type == type) {
-            break;
-        }
-
-        if(tokens[pos].type == NUM) {
-            result[i] = tokens[pos].val + '0';
-        } else {
-            result[i] = tokens[pos].symbol;
-        }
-
-        result[i+1] = '\0';
-
-    }
-
-    return result;
-}
 
 int charCount(FILE *fptr) {
     int chars = 0;
@@ -185,27 +67,6 @@ int charCount(FILE *fptr) {
     }
 
     return chars - 1;
-}
-
-int tokensLength(Token *tokens) {
-    int i = 0;
-    while(tokens[i].end != 1) {
-        i++;
-    }
-
-    return i;
-}
-
-int namesLength(Name *names) {
-    int i = 0;
-    Name *tmp = names;
-
-    while(tmp != NULL) {
-        tmp = tmp->nameLink;
-        i++;
-    }
-
-    return i;
 }
 
 void printTokens(Token *tokens) {
@@ -359,45 +220,6 @@ Token *lexer(char name[]) {
     fclose(fileO);
 
     return tokens;
-}
-
-void printNames(Name *head) {
-    Name *tmp = head;
-
-    while(tmp != NULL) {
-        printf("%s - ", tmp->name);
-        printf("%s\n", tmp->defLink->stringVal);
-        tmp = tmp->nameLink;
-    }
-}
-
-Name *parser(Token *tokens) {
-    int length = tokensLength(tokens);
-    Name *head = NULL;
-
-    char *tmp;
-    for(int i = 0; i < length; i++) {
-        if(tokens[i].type == LPAREN) {
-            tmp = sort(tokens, i);
-            addName(&head, &tmp, NAME);
-            i += strlen(tmp);
-        } else if(tokens[i].type == LBRACKET) {
-            tmp = sort(tokens, i);
-            addDefinition(&head, &tmp, DEF);
-            i += strlen(tmp);
-        }
-    }
-
-    return head;
-}
-
-Name *sortNames(Name *head) {
-    int length = namesLength(head);
-
-    for(int i = 0; i < length; i++) {
-    }
-
-    return head;
 }
 
 #endif
