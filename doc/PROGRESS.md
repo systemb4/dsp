@@ -106,3 +106,13 @@
 
 8 March 2022: Moving on, will just change numbers when time comes. Need to now
     restructure AST and be able to loop through everything.
+
+9 March 2022: I tried moving everything into multiple files (lexer.h, parser.h,
+    parSort.h) but it wasn't working well and I think im just going to stick to
+    a sort of suckless/kai hendry method of sticking everything into one file
+    even though that is like the #1 rule when first starting a project <use
+    multiple files>
+
+28 March 2022: Picking up work again. Things need to do: go through entire file
+    and do waht code says, everything done before was just for sorting through
+    everything so that this would be easier.

@@ -1,4 +1,6 @@
 /*
+ * nachtigal
+ *
  * Author: Lukas Nitzsche
  */
 
@@ -12,7 +14,6 @@
 #define FOREACH_CHAR(CHAR) \
     CHAR(NUM)      \
     CHAR(LETTER)   \
-    CHAR(END)      \
     CHAR(SPACE)    \
                    \
     CHAR(PLUS)     \
@@ -34,8 +35,6 @@
     CHAR(COMMA)    \
 
 #define FOREACH_KEYWORD(KEYWORD) \
-    KEYWORD(HEAD)   \
-    KEYWORD(CONST)  \
     KEYWORD(NAME)   \
     KEYWORD(DEF)    \
 
@@ -122,7 +121,7 @@ void addDefinition(Name **head, char **val, enum keyWord type) {
     result->type = type;
     result->defLink = NULL;
 
-    /* strToDb currently broken bc of pointers */
+    /* be able to choose between actual number or string */
     result->stringVal = *val;
 
     if(*head == NULL) {
@@ -206,6 +205,14 @@ int namesLength(Name *names) {
     }
 
     return i;
+}
+
+size_t getSize (const char* s) {
+    size_t size = 0;
+
+    while (*s++) ++size;
+
+    return size;
 }
 
 void printTokens(Token *tokens) {
@@ -365,7 +372,7 @@ void printNames(Name *head) {
     Name *tmp = head;
 
     while(tmp != NULL) {
-        printf("%s - ", tmp->name);
+        printf("%d - ", getSize(tmp->name));
         printf("%s\n", tmp->defLink->stringVal);
         tmp = tmp->nameLink;
     }
@@ -391,13 +398,7 @@ Name *parser(Token *tokens) {
     return head;
 }
 
-Name *sortNames(Name *head) {
-    int length = namesLength(head);
-
-    for(int i = 0; i < length; i++) {
-    }
-
-    return head;
+void run(Name *head) {
 }
 
 #endif

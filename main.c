@@ -12,7 +12,6 @@ int main(int argc, char *argv[]) {
 
     //printTokens(tokens);
     printNames(names);
-    sortNames(names);
 
     free(tokens);
     free(names);
