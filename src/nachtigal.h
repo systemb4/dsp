@@ -373,6 +373,7 @@ void printNames(Name *head) {
 
     while(tmp != NULL) {
         printf("%d - ", getSize(tmp->defLink->stringVal));
+        printf("%s - ", tmp->name);
         printf("%s\n", tmp->defLink->stringVal);
         tmp = tmp->nameLink;
     }
