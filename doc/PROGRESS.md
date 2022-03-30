@@ -116,3 +116,8 @@
 28 March 2022: Picking up work again. Things need to do: go through entire file
     and do waht code says, everything done before was just for sorting through
     everything so that this would be easier.
+
+30 March 2022: The difficult part now will be having to deal for every instance
+    anything that can happen when going through each defintion. I will also want
+    to create a secondary std.c file that will hold basic functions like print()
+    and other things.
