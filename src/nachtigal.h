@@ -400,6 +400,17 @@ Name *parser(Token *tokens) {
 }
 
 void run(Name *head) {
+    int length = namesLength(head);
+
+    Name *tmp = head;
+    for(int i = 0; i < length; i++) {
+        int length_str = getSize(tmp->defLink->stringVal);
+        for(int x = 0; x < length_str; x++) {
+            printf("%c", tmp->defLink->stringVal[x]);
+        }
+        printf("\n");
+        tmp = tmp->nameLink;
+    }
 }
 
 #endif
