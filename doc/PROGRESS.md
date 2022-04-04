@@ -121,3 +121,9 @@
     anything that can happen when going through each defintion. I will also want
     to create a secondary std.c file that will hold basic functions like print()
     and other things.
+
+4 April 2022: The nested for loops are geting very complicated in the run
+    function but we will have to make do. Having prooblem getting double values
+    into the art structure. This is the last step before having something
+    functional but it is proving to be very difficult. I might attempt a quick
+    "rewrite" of the function.

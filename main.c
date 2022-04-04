@@ -12,7 +12,8 @@ int main(int argc, char *argv[]) {
 
     //printTokens(tokens);
     printNames(names);
-    run(names);
+    Arithmetic *art = run(names);
+    printArt(art);
 
     free(tokens);
     free(names);

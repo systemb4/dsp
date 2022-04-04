@@ -22,6 +22,8 @@ structure of final run function:
     And then everything stays in memory but if I call a function like print() then it will be
         able to go back in memory, get that variable and print it, probably not be able to concat
         in the function, only when defining variables
+    Maybe make new struct linked list that will take a number or string and a type op like
+    (*, /, +, -) so that it can be easier to do mathematics
 
 
 structure AST so that it can be more widely implementable

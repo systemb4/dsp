@@ -75,7 +75,6 @@ typedef struct Name {
 } Name;
 
 typedef struct Definition {
-    char op;
     union {
         double numVal;
         char *stringVal;
@@ -84,6 +83,16 @@ typedef struct Definition {
     struct Definition *defLink;
 } Definition;
 
+typedef struct Arithmetic {
+    char op;
+    union {
+        double numVal;
+        char *stringVal;
+    };
+
+    struct Arithmetic *next;
+} Arithmetic;
+
 double strToDb(char *str) {
     double result;
     char *ptr_end;
@@ -91,6 +100,22 @@ double strToDb(char *str) {
     result = strtod(str, &ptr_end);
 
     return result;
+}
+
+void addArt(Arithmetic **head, char op, double numVal) {
+    Arithmetic *result = malloc(sizeof(Arithmetic));
+    Arithmetic *lastNode = *head;
+
+    result->op = op;
+    result->numVal = numVal;
+
+    if(*head == NULL) {
+        *head = result;
+    } else {
+        while(lastNode->next != NULL) {
+            lastNode = lastNode->next;
+        }
+    }
 }
 
 void addName(Name **head, char **name, enum keyWord type) {
@@ -379,6 +404,15 @@ void printNames(Name *head) {
     }
 }
 
+void printArt(Arithmetic *head) {
+    Arithmetic *tmp = head;
+
+    while(tmp != NULL) {
+        printf("%c - %ld\n", tmp->op, tmp->numVal);
+        tmp = tmp->next;
+    }
+}
+
 Name *parser(Token *tokens) {
     int length = tokensLength(tokens);
     Name *head = NULL;
@@ -399,18 +433,33 @@ Name *parser(Token *tokens) {
     return head;
 }
 
-void run(Name *head) {
+Arithmetic *run(Name *head) {
     int length = namesLength(head);
 
     Name *tmp = head;
+    Arithmetic *art = NULL;
+
     for(int i = 0; i < length; i++) {
         int length_str = getSize(tmp->defLink->stringVal);
         for(int x = 0; x < length_str; x++) {
-            printf("%c", tmp->defLink->stringVal[x]);
+            if(tmp->defLink->stringVal[x] == '\'') {
+                char *num = malloc(sizeof(char) * 15);
+                for(int y = 0; tmp->defLink->stringVal[x] != '\''; y++) {
+                    x++;
+                    printf("%c\n", tmp->defLink->stringVal[x]);
+                    num[y] = tmp->defLink->stringVal[x];
+                    num[y+1] = '\0';
+                }
+                x++;
+                addArt(&art, "+", atoi(num));
+            }
+            tmp = tmp->nameLink;
         }
         printf("\n");
         tmp = tmp->nameLink;
     }
+
+    return art;
 }
 
 #endif
