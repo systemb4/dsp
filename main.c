@@ -12,6 +12,8 @@ int main(int argc, char *argv[]) {
 
     //printTokens(tokens);
     printNames(names);
+
+    printf("\n");
     Arithmetic *art = run(names);
     printArt(art);
 

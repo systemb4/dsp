@@ -451,9 +451,8 @@ Arithmetic *run(Name *head) {
                     num[y+1] = '\0';
                 }
                 x++;
-                addArt(&art, "+", atoi(num));
+                addArt(&art, '+', atoi(num));
             }
-            tmp = tmp->nameLink;
         }
         printf("\n");
         tmp = tmp->nameLink;
