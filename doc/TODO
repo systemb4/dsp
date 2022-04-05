@@ -5,6 +5,7 @@ documentation of how it works
 have a default main.c that is compiled and installed to system
 fix up make file
 multi-thread?
+rename like all variables to something more sensible
 
 function for switch statments - lexer
 add comparison ops - lexer

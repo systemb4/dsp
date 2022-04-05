@@ -85,10 +85,7 @@ typedef struct Definition {
 
 typedef struct Arithmetic {
     char op;
-    union {
-        double numVal;
-        char *stringVal;
-    };
+    double numVal;
 
     struct Arithmetic *next;
 } Arithmetic;
@@ -108,6 +105,7 @@ void addArt(Arithmetic **head, char op, double numVal) {
 
     result->op = op;
     result->numVal = numVal;
+    result->next = NULL;
 
     if(*head == NULL) {
         *head = result;
@@ -408,7 +406,7 @@ void printArt(Arithmetic *head) {
     Arithmetic *tmp = head;
 
     while(tmp != NULL) {
-        printf("%c - %ld\n", tmp->op, tmp->numVal);
+        printf("%c = %lf\n", tmp->op, tmp->numVal);
         tmp = tmp->next;
     }
 }
@@ -438,23 +436,23 @@ Arithmetic *run(Name *head) {
 
     Name *tmp = head;
     Arithmetic *art = NULL;
+    char *num, *value;
 
     for(int i = 0; i < length; i++) {
         int length_str = getSize(tmp->defLink->stringVal);
         for(int x = 0; x < length_str; x++) {
             if(tmp->defLink->stringVal[x] == '\'') {
-                char *num = malloc(sizeof(char) * 15);
+                x++;
+                num = malloc(sizeof(char) * 15);
                 for(int y = 0; tmp->defLink->stringVal[x] != '\''; y++) {
-                    x++;
-                    printf("%c\n", tmp->defLink->stringVal[x]);
                     num[y] = tmp->defLink->stringVal[x];
                     num[y+1] = '\0';
+                    x++;
                 }
                 x++;
-                addArt(&art, '+', atoi(num));
+                addArt(&art, '+', strtod(num, &value));
             }
         }
-        printf("\n");
         tmp = tmp->nameLink;
     }
 
