@@ -127,3 +127,9 @@
     into the art structure. This is the last step before having something
     functional but it is proving to be very difficult. I might attempt a quick
     "rewrite" of the function.
+
+5 April 2022: I got the first number that appears in the file into the
+    Arithmetic struct but can't seem to get the rest of the numbers in
+    'list.nagl' into the next nodes of the struct. What I need to do next is fix
+    it so that all the numbers are included and then I need to be able to add
+    the operator to it as well.
