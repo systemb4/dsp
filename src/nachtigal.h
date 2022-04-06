@@ -113,6 +113,8 @@ void addArt(Arithmetic **head, char op, double numVal) {
         while(lastNode->next != NULL) {
             lastNode = lastNode->next;
         }
+
+        lastNode->next = result;
     }
 }
 
