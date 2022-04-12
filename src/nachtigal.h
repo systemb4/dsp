@@ -87,6 +87,7 @@ typedef struct Arithmetic {
     char op;
     double numVal;
 
+    struct Arithmetic *list;
     struct Arithmetic *next;
 } Arithmetic;
 
@@ -106,6 +107,7 @@ void addArt(Arithmetic **head, char op, double numVal) {
     result->op = op;
     result->numVal = numVal;
     result->next = NULL;
+    //result->list->next = NULL;
 
     if(*head == NULL) {
         *head = result;
@@ -164,7 +166,7 @@ void addDefinition(Name **head, char **val, enum keyWord type) {
     }
 }
 
-char *sort(Token *tokens, int pos) {
+char *sortTokens(Token *tokens, int pos) {
     char *result = malloc(sizeof(char) * 15);
     enum charType type;
 
@@ -194,6 +196,9 @@ char *sort(Token *tokens, int pos) {
     }
 
     return result;
+}
+
+Arithmetic sortStack(Arithmetic **head) {
 }
 
 int charCount(FILE *fptr) {
@@ -406,10 +411,16 @@ void printNames(Name *head) {
 
 void printArt(Arithmetic *head) {
     Arithmetic *tmp = head;
+    Arithmetic *tm = tmp->list;
 
     while(tmp != NULL) {
-        printf("%c = %lf\n", tmp->op, tmp->numVal);
+        while(tmp->list->next != NULL) {
+            printf("%c = %lf\n", tmp->list->op, tmp->list->numVal);
+            tm = tmp->list->next;
+        }
+
         tmp = tmp->next;
+        tm = tmp;
     }
 }
 
@@ -420,11 +431,11 @@ Name *parser(Token *tokens) {
     char *tmp;
     for(int i = 0; i < length; i++) {
         if(tokens[i].type == LPAREN) {
-            tmp = sort(tokens, i);
+            tmp = sortTokens(tokens, i);
             addName(&head, &tmp, NAME);
             i += strlen(tmp);
         } else if(tokens[i].type == LBRACKET) {
-            tmp = sort(tokens, i);
+            tmp = sortTokens(tokens, i);
             addDefinition(&head, &tmp, DEF);
             i += strlen(tmp);
         }
@@ -433,26 +444,35 @@ Name *parser(Token *tokens) {
     return head;
 }
 
+char charCheck(char ch) {
+    if(&ch == NULL) {
+        return 'X';
+    } else {
+        return ch;
+    }
+}
+
 Arithmetic *run(Name *head) {
     int length = namesLength(head);
 
     Name *tmp = head;
     Arithmetic *art = NULL;
-    char *num, *value;
+    char *numVal, *end;
 
     for(int i = 0; i < length; i++) {
         int length_str = getSize(tmp->defLink->stringVal);
         for(int x = 0; x < length_str; x++) {
             if(tmp->defLink->stringVal[x] == '\'') {
                 x++;
-                num = malloc(sizeof(char) * 15);
+                numVal = malloc(sizeof(char) * 15);
                 for(int y = 0; tmp->defLink->stringVal[x] != '\''; y++) {
-                    num[y] = tmp->defLink->stringVal[x];
-                    num[y+1] = '\0';
+                    numVal[y] = tmp->defLink->stringVal[x];
+                    numVal[y+1] = '\0';
                     x++;
                 }
                 x++;
-                addArt(&art, '+', strtod(num, &value));
+                //addArt(&art->list, charCheck(tmp->defLink->stringVal[x]), strtod(numVal, &end));
+                addArt(&art, '+', strtod(numVal, &end));
             }
         }
         tmp = tmp->nameLink;

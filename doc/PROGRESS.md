@@ -133,3 +133,12 @@
     'list.nagl' into the next nodes of the struct. What I need to do next is fix
     it so that all the numbers are included and then I need to be able to add
     the operator to it as well.
+
+9 April 2022: The Arithmetic struct is basically just the stack at this point
+    for the entire language. I will need to implement a sort of sor stack
+    function into the code for order of operations and all. Print statement
+    still needs to be made. And a way to read the beginning/names of each statement.
+
+12 April 2022: Need to be able add to sub struct within struct that are both
+    esentially linked lists. Maybe I make them doubly linke lists? for extra
+    functionality? idk yet but definitely on something there.
