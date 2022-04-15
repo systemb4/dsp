@@ -86,10 +86,21 @@ typedef struct Definition {
 typedef struct Arithmetic {
     char op;
     double numVal;
+    struct Node *node;
 
-    struct Arithmetic *list;
+    /*
+     * this need to be doubly linked
+     */
+
     struct Arithmetic *next;
 } Arithmetic;
+
+typedef struct Node {
+    char op;
+    double numVal;
+
+    struct Node *next;
+} Node;
 
 double strToDb(char *str) {
     double result;
@@ -100,14 +111,32 @@ double strToDb(char *str) {
     return result;
 }
 
-void addArt(Arithmetic **head, char op, double numVal) {
+void addArtHead(Arithmetic **head, Arithmetic **pos) {
+    /*
+     * for sortStack so that * and / can be added the front
+     * so that they are chosen first when sorted through in a linear
+     * sense
+     */
+}
+
+Arithmetic *addArt(Arithmetic **head, char op, double numVal) {
+    Arithmetic *tmp = malloc(sizeof(Arithmetic));
+
+    /*
+     * use this in both addEnd and addFront to make easier
+     */
+
+    return tmp;
+}
+
+void addArtEnd(Arithmetic **head, char op, double numVal) {
     Arithmetic *result = malloc(sizeof(Arithmetic));
     Arithmetic *lastNode = *head;
 
     result->op = op;
     result->numVal = numVal;
     result->next = NULL;
-    //result->list->next = NULL;
+    result->node = NULL;
 
     if(*head == NULL) {
         *head = result;
@@ -198,7 +227,14 @@ char *sortTokens(Token *tokens, int pos) {
     return result;
 }
 
-Arithmetic sortStack(Arithmetic **head) {
+Arithmetic *sortStack(Arithmetic *head) {
+    /*
+     * for sort through Definition by order of operations
+     */
+
+    Arithmetic *tmp = head;
+    /*while(tmp != NULL) {
+    }*/
 }
 
 int charCount(FILE *fptr) {
@@ -411,8 +447,13 @@ void printNames(Name *head) {
 
 void printArt(Arithmetic *head) {
     Arithmetic *tmp = head;
-    Arithmetic *tm = tmp->list;
 
+    while(tmp != NULL) {
+        printf("%c = %.2lf\n", tmp->op, tmp->numVal);
+        tmp = tmp->next;
+    }
+
+    /*
     while(tmp != NULL) {
         while(tmp->list->next != NULL) {
             printf("%c = %lf\n", tmp->list->op, tmp->list->numVal);
@@ -421,7 +462,7 @@ void printArt(Arithmetic *head) {
 
         tmp = tmp->next;
         tm = tmp;
-    }
+    }*/
 }
 
 Name *parser(Token *tokens) {
@@ -445,7 +486,7 @@ Name *parser(Token *tokens) {
 }
 
 char charCheck(char ch) {
-    if(&ch == NULL) {
+    if(ch == 0) {
         return 'X';
     } else {
         return ch;
@@ -471,8 +512,7 @@ Arithmetic *run(Name *head) {
                     x++;
                 }
                 x++;
-                //addArt(&art->list, charCheck(tmp->defLink->stringVal[x]), strtod(numVal, &end));
-                addArt(&art, '+', strtod(numVal, &end));
+                addArtEnd(&art, charCheck(tmp->defLink->stringVal[x]), strtod(numVal, &end));
             }
         }
         tmp = tmp->nameLink;

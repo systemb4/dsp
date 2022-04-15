@@ -142,3 +142,6 @@
 12 April 2022: Need to be able add to sub struct within struct that are both
     esentially linked lists. Maybe I make them doubly linke lists? for extra
     functionality? idk yet but definitely on something there.
+
+13 April 2022: The run function is basically just a glorfied Definition sort function.
+    Need to be able to also sort through Name as well.

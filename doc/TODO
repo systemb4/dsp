@@ -1,18 +1,18 @@
-do
+- do
+
+have a default main.c that is compiled and installed to system
+fix up make file
+rename like all variables to something more sensible
+sort stack function
 
 documentation of each function line by line comments
 documentation of how it works
-have a default main.c that is compiled and installed to system
-fix up make file
 multi-thread?
-rename like all variables to something more sensible
-
 function for switch statments - lexer
 add comparison ops - lexer
 string to double function
 addDef function number or string
 spaces included in lexer when going through
-
 
 structure of final run function:
     go through definition, if it sees "" + "" then it makes a new string and sets it
@@ -26,6 +26,8 @@ structure of final run function:
     Maybe make new struct linked list that will take a number or string and a type op like
     (*, /, +, -) so that it can be easier to do mathematics
 
+    be able to go through linked-linked list
+    check Name too and not just sort through def
 
 structure AST so that it can be more widely implementable
     be able to link more defs to name but no def should be linked to def and
@@ -35,10 +37,10 @@ structure AST so that it can be more widely implementable
     try to make it a tree and each head of tree is linked to each other OR the
     tree just goes down further as the code progresses
 
-review
+- review
 
 sort function for all of the tokens
 addDef function get working
 sor function works for both definitions and names
 
-done
+- done
