@@ -16,9 +16,12 @@ int main(int argc, char *argv[]) {
     printf("\n");
     Arithmetic *art = run(names);
     printArt(art);
+
+    /*
     printf("\n");
     art = sortStack(art);
     printArt(art);
+    */
 
     free(tokens);
     free(names);

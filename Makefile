@@ -1,6 +1,7 @@
 CC=gcc
 CFLAGS=#-lpthread
-INPUT=input/list.nagl
+BINS := $(SRCS:%.c=%)
+DEPS = src/nachtigal.h
 
 output: main.o
 	$(CC) $(CFLAGS) main.o -o output
@@ -9,4 +10,4 @@ main.o: main.c
 	$(CC) -c main.c
 
 clean:
-	rm *.o output
+	rm -rvf *.o ${BINS}

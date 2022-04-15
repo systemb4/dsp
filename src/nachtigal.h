@@ -1,6 +1,6 @@
 /*
  * nachtigal
- *
+ * idk anymore
  * Author: Lukas Nitzsche
  */
 
@@ -92,6 +92,7 @@ typedef struct Arithmetic {
      * this need to be doubly linked
      */
 
+    struct Arithmetic *prev;
     struct Arithmetic *next;
 } Arithmetic;
 
@@ -119,24 +120,25 @@ void addArtHead(Arithmetic **head, Arithmetic **pos) {
      */
 }
 
-Arithmetic *addArt(Arithmetic **head, char op, double numVal) {
+Arithmetic *addArt(Arithmetic *head, char op, double numVal) {
     Arithmetic *tmp = malloc(sizeof(Arithmetic));
 
     /*
      * use this in both addEnd and addFront to make easier
      */
 
+    tmp->op = op;
+    tmp->numVal = numVal;
+    tmp->next = NULL;
+    tmp->prev = NULL;
+    tmp->node = NULL;
+
     return tmp;
 }
 
 void addArtEnd(Arithmetic **head, char op, double numVal) {
-    Arithmetic *result = malloc(sizeof(Arithmetic));
+    Arithmetic *result = addArt(*head, op, numVal);
     Arithmetic *lastNode = *head;
-
-    result->op = op;
-    result->numVal = numVal;
-    result->next = NULL;
-    result->node = NULL;
 
     if(*head == NULL) {
         *head = result;
@@ -145,6 +147,7 @@ void addArtEnd(Arithmetic **head, char op, double numVal) {
             lastNode = lastNode->next;
         }
 
+        result->prev = lastNode;
         lastNode->next = result;
     }
 }
@@ -452,6 +455,8 @@ void printArt(Arithmetic *head) {
         printf("%c = %.2lf\n", tmp->op, tmp->numVal);
         tmp = tmp->next;
     }
+
+    //tmp = tmp->prev;
 
     /*
     while(tmp != NULL) {
