@@ -1,13 +1,18 @@
+# nachtigal
+
 CC=gcc
 CFLAGS=#-lpthread
+SRCS := $(wildcard *.c)
 BINS := $(SRCS:%.c=%)
 DEPS = src/nachtigal.h
 
-output: main.o
-	$(CC) $(CFLAGS) main.o -o output
+all: ${BINS}
 
-main.o: main.c
-	$(CC) -c main.c
+%: %.o
+	$(CC) $(CFLAGS) $< -o $@
+
+%.o: %.c
+	$(CC) -c $<
 
 clean:
 	rm -rvf *.o ${BINS}

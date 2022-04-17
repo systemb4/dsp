@@ -15,6 +15,7 @@ int main(int argc, char *argv[]) {
 
     printf("\n");
     Arithmetic *art = run(names);
+    //addArtHead(&art, '$', 3.2, 0);
     printArt(art);
 
     /*

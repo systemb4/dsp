@@ -145,3 +145,6 @@
 
 13 April 2022: The run function is basically just a glorfied Definition sort function.
     Need to be able to also sort through Name as well.
+
+17 April 2022: Sorted and a marker set in <Arithmetic> (pos) which allows to see
+    which nodes (Arithmetic) are on the same line for order of ops and sorting.

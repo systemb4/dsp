@@ -85,13 +85,11 @@ typedef struct Definition {
 
 typedef struct Arithmetic {
     char op;
+    int pos; /* use to show which
+                nodes are on the same line for sort and order of ops */
     double numVal;
-    struct Node *node;
 
-    /*
-     * this need to be doubly linked
-     */
-
+    struct Arithmetic *node;
     struct Arithmetic *prev;
     struct Arithmetic *next;
 } Arithmetic;
@@ -99,6 +97,12 @@ typedef struct Arithmetic {
 typedef struct Node {
     char op;
     double numVal;
+
+    /*
+     * still experimental
+     * this will most likely be used to so that we can have linked
+     *  list within linked list
+     */
 
     struct Node *next;
 } Node;
@@ -112,15 +116,7 @@ double strToDb(char *str) {
     return result;
 }
 
-void addArtHead(Arithmetic **head, Arithmetic **pos) {
-    /*
-     * for sortStack so that * and / can be added the front
-     * so that they are chosen first when sorted through in a linear
-     * sense
-     */
-}
-
-Arithmetic *addArt(Arithmetic *head, char op, double numVal) {
+Arithmetic *addArt(Arithmetic *head, char op, double numVal, int numPos) {
     Arithmetic *tmp = malloc(sizeof(Arithmetic));
 
     /*
@@ -129,6 +125,7 @@ Arithmetic *addArt(Arithmetic *head, char op, double numVal) {
 
     tmp->op = op;
     tmp->numVal = numVal;
+    tmp->pos = numPos;
     tmp->next = NULL;
     tmp->prev = NULL;
     tmp->node = NULL;
@@ -136,8 +133,22 @@ Arithmetic *addArt(Arithmetic *head, char op, double numVal) {
     return tmp;
 }
 
-void addArtEnd(Arithmetic **head, char op, double numVal) {
-    Arithmetic *result = addArt(*head, op, numVal);
+void addArtHead(Arithmetic **head, char op, double numVal, int numPos) {
+    Arithmetic *result = addArt(*head, op, numVal, numPos);
+    Arithmetic *tmp = *head;
+
+    result->next = *head;
+    *head = result;
+
+    /*
+     * for sortStack so that * and / can be added the front
+     *  so that they are chosen first when sorted through in a linear
+     *  sense
+     */
+}
+
+void addArtEnd(Arithmetic **head, char op, double numVal, int numPos) {
+    Arithmetic *result = addArt(*head, op, numVal, numPos);
     Arithmetic *lastNode = *head;
 
     if(*head == NULL) {
@@ -233,6 +244,8 @@ char *sortTokens(Token *tokens, int pos) {
 Arithmetic *sortStack(Arithmetic *head) {
     /*
      * for sort through Definition by order of operations
+     * this is basically insertion sort where a value is compared
+     *  to something and if true just puts it in front
      */
 
     Arithmetic *tmp = head;
@@ -452,7 +465,7 @@ void printArt(Arithmetic *head) {
     Arithmetic *tmp = head;
 
     while(tmp != NULL) {
-        printf("%c = %.2lf\n", tmp->op, tmp->numVal);
+        printf("%c = %.2lf ! %d\n", tmp->op, tmp->numVal, tmp->pos);
         tmp = tmp->next;
     }
 
@@ -517,7 +530,7 @@ Arithmetic *run(Name *head) {
                     x++;
                 }
                 x++;
-                addArtEnd(&art, charCheck(tmp->defLink->stringVal[x]), strtod(numVal, &end));
+                addArtEnd(&art, charCheck(tmp->defLink->stringVal[x]), strtod(numVal, &end), i);
             }
         }
         tmp = tmp->nameLink;
