@@ -6,7 +6,7 @@ List of possible chars and an explination of syntax
 [ ] holds definition
 " " holds a character or string
 ' ' holds a number
-: set equal to
+: set name equal to definition
 + addition
 - subtraction
 * multiplication
