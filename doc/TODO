@@ -13,6 +13,7 @@ add comparison ops - lexer
 string to double function
 addDef function number or string
 spaces included in lexer when going through
+only except .nagl files
 
 structure of final run function:
     go through definition, if it sees "" + "" then it makes a new string and sets it
