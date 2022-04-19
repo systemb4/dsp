@@ -102,15 +102,6 @@ typedef union Values {
     double numVal;
 } Values;
 
-double strToDb(char *str) {
-    double result;
-    char *ptr_end;
-
-    result = strtod(str, &ptr_end);
-
-    return result;
-}
-
 Arithmetic *addArt(Arithmetic *head, char op, char *value, int numPos, enum charType type) {
     Arithmetic *tmp = malloc(sizeof(Arithmetic));
     char *end;
@@ -381,11 +372,11 @@ Token *lexer(char name[]) {
 
     /*
      * make sure file is of type .nagl
-     *
-    if() {
+     */
+    if(strcmp(strrchr(name, '\0') - 5, ".nagl")) {
         fprintf(stderr, "File needs to be of type '.nagl'!\n");
+        exit(EXIT_SUCCESS);
     }
-    */
 
 
     char c = fgetc(fileO);
