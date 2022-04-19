@@ -23,3 +23,11 @@ main source code is in src/nachtigal.h and is called in main.c
 process
 ------
 code goes through tokenizer, lexer, parser, main run
+
+todo
+----
+doc/TODO
+
+progres
+-------
+doc/PROGRESS.md

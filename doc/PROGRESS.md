@@ -148,3 +148,7 @@
 
 17 April 2022: Sorted and a marker set in <Arithmetic> (pos) which allows to see
     which nodes (Arithmetic) are on the same line for order of ops and sorting.
+
+19 April 2022: Can now swap between double and string in art struct. next is
+    some small things and clean up and then sort function and then print
+    function and then base is basically finished.
