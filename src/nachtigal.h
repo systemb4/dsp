@@ -1,6 +1,6 @@
 /*
  * nachtigal
- * idk anymore
+ * See LICENSE file for copyright and license details
  * Author: Lukas Nitzsche
  */
 
@@ -85,27 +85,22 @@ typedef struct Definition {
 
 typedef struct Arithmetic {
     char op;
+    enum charType type;
     int pos; /* use to show which
                 nodes are on the same line for sort and order of ops */
-    double numVal;
+    union {
+        char *str;
+        double numVal;
+    };
 
-    struct Arithmetic *node;
     struct Arithmetic *prev;
     struct Arithmetic *next;
 } Arithmetic;
 
-typedef struct Node {
-    char op;
+typedef union Values {
+    char *str;
     double numVal;
-
-    /*
-     * still experimental
-     * this will most likely be used to so that we can have linked
-     *  list within linked list
-     */
-
-    struct Node *next;
-} Node;
+} Values;
 
 double strToDb(char *str) {
     double result;
@@ -116,25 +111,40 @@ double strToDb(char *str) {
     return result;
 }
 
-Arithmetic *addArt(Arithmetic *head, char op, double numVal, int numPos) {
+Arithmetic *addArt(Arithmetic *head, char op, char *value, int numPos, enum charType type) {
     Arithmetic *tmp = malloc(sizeof(Arithmetic));
+    char *end;
+
+    if(CHAR_STRING[type] == CHAR_STRING[NUM]) {
+        tmp->numVal = strtod(value, &end);
+        //tmp->str = NULL;
+    } else {
+        tmp->str = value;
+        //tmp->numVal = NULL;
+    }
 
     /*
      * use this in both addEnd and addFront to make easier
      */
 
+    tmp->type = type;
     tmp->op = op;
-    tmp->numVal = numVal;
     tmp->pos = numPos;
     tmp->next = NULL;
     tmp->prev = NULL;
-    tmp->node = NULL;
 
     return tmp;
 }
 
-void addArtHead(Arithmetic **head, char op, double numVal, int numPos) {
-    Arithmetic *result = addArt(*head, op, numVal, numPos);
+void artMoveBack(Arithmetic **head, Arithmetic *node) {
+    /*
+     * move specified <node> back one position
+     *  so basically swap with its prev
+     */
+}
+
+void addArtHead(Arithmetic **head, char op, char *value, int numPos, enum charType type) {
+    Arithmetic *result = addArt(*head, op, value, numPos, type);
     Arithmetic *tmp = *head;
 
     result->next = *head;
@@ -147,8 +157,8 @@ void addArtHead(Arithmetic **head, char op, double numVal, int numPos) {
      */
 }
 
-void addArtEnd(Arithmetic **head, char op, double numVal, int numPos) {
-    Arithmetic *result = addArt(*head, op, numVal, numPos);
+void addArtEnd(Arithmetic **head, char op, char *value, int numPos, enum charType type) {
+    Arithmetic *result = addArt(*head, op, value, numPos, type);
     Arithmetic *lastNode = *head;
 
     if(*head == NULL) {
@@ -297,6 +307,14 @@ size_t getSize (const char* s) {
     return size;
 }
 
+char charCheck(char ch) {
+    if(ch == 0) {
+        return 'X';
+    } else {
+        return ch;
+    }
+}
+
 void printTokens(Token *tokens) {
     int length = tokensLength(tokens);
 
@@ -313,6 +331,43 @@ void printTokens(Token *tokens) {
     }
 }
 
+void printNames(Name *head) {
+    Name *tmp = head;
+
+    while(tmp != NULL) {
+        printf("%d - ", getSize(tmp->defLink->stringVal));
+        printf("%s - ", tmp->name);
+        printf("%s\n", tmp->defLink->stringVal);
+        tmp = tmp->nameLink;
+    }
+}
+
+void printArt(Arithmetic *head) {
+    Arithmetic *tmp = head;
+
+    while(tmp != NULL) {
+        if(tmp->type == NUM) {
+            printf("%c = %.2lf ! %d\n", tmp->op, tmp->numVal, tmp->pos);
+        } else if(tmp->type == LETTER) {
+            printf("%c = %s ! %d\n", tmp->op, tmp->str, tmp->pos);
+        }
+        tmp = tmp->next;
+    }
+
+    //tmp = tmp->prev;
+
+    /*
+    while(tmp != NULL) {
+        while(tmp->list->next != NULL) {
+            printf("%c = %lf\n", tmp->list->op, tmp->list->numVal);
+            tm = tmp->list->next;
+        }
+
+        tmp = tmp->next;
+        tm = tmp;
+    }*/
+}
+
 Token *lexer(char name[]) {
     FILE *fileO = fopen(name, "r");
     int length = charCount(fileO);
@@ -323,6 +378,15 @@ Token *lexer(char name[]) {
         fprintf(stderr, "File does not exist!\n");
         exit(EXIT_SUCCESS);
     }
+
+    /*
+     * make sure file is of type .nagl
+     *
+    if() {
+        fprintf(stderr, "File needs to be of type '.nagl'!\n");
+    }
+    */
+
 
     char c = fgetc(fileO);
 
@@ -450,39 +514,6 @@ Token *lexer(char name[]) {
     return tokens;
 }
 
-void printNames(Name *head) {
-    Name *tmp = head;
-
-    while(tmp != NULL) {
-        printf("%d - ", getSize(tmp->defLink->stringVal));
-        printf("%s - ", tmp->name);
-        printf("%s\n", tmp->defLink->stringVal);
-        tmp = tmp->nameLink;
-    }
-}
-
-void printArt(Arithmetic *head) {
-    Arithmetic *tmp = head;
-
-    while(tmp != NULL) {
-        printf("%c = %.2lf ! %d\n", tmp->op, tmp->numVal, tmp->pos);
-        tmp = tmp->next;
-    }
-
-    //tmp = tmp->prev;
-
-    /*
-    while(tmp != NULL) {
-        while(tmp->list->next != NULL) {
-            printf("%c = %lf\n", tmp->list->op, tmp->list->numVal);
-            tm = tmp->list->next;
-        }
-
-        tmp = tmp->next;
-        tm = tmp;
-    }*/
-}
-
 Name *parser(Token *tokens) {
     int length = tokensLength(tokens);
     Name *head = NULL;
@@ -503,34 +534,39 @@ Name *parser(Token *tokens) {
     return head;
 }
 
-char charCheck(char ch) {
-    if(ch == 0) {
-        return 'X';
-    } else {
-        return ch;
-    }
-}
-
 Arithmetic *run(Name *head) {
     int length = namesLength(head);
 
     Name *tmp = head;
     Arithmetic *art = NULL;
-    char *numVal, *end;
+    char *cVal, *end;
+    enum charType typeCheck;
 
     for(int i = 0; i < length; i++) {
         int length_str = getSize(tmp->defLink->stringVal);
         for(int x = 0; x < length_str; x++) {
             if(tmp->defLink->stringVal[x] == '\'') {
+                typeCheck = NUM;
                 x++;
-                numVal = malloc(sizeof(char) * 15);
+                cVal = malloc(sizeof(char) * 15);
                 for(int y = 0; tmp->defLink->stringVal[x] != '\''; y++) {
-                    numVal[y] = tmp->defLink->stringVal[x];
-                    numVal[y+1] = '\0';
+                    cVal[y] = tmp->defLink->stringVal[x];
+                    cVal[y+1] = '\0';
                     x++;
                 }
                 x++;
-                addArtEnd(&art, charCheck(tmp->defLink->stringVal[x]), strtod(numVal, &end), i);
+                addArtEnd(&art, charCheck(tmp->defLink->stringVal[x]), cVal, i, typeCheck);
+            } else if(tmp->defLink->stringVal[x] == '"') {
+                typeCheck = LETTER;
+                x++;
+                cVal = malloc(sizeof(char) * 100);
+                for(int y = 0; tmp->defLink->stringVal[x] != '"'; y++) {
+                    cVal[y] = tmp->defLink->stringVal[x];
+                    cVal[y+1] = '\0';
+                    x++;
+                }
+                x++;
+                addArtEnd(&art, charCheck(tmp->defLink->stringVal[x]), cVal, i, typeCheck);
             }
         }
         tmp = tmp->nameLink;

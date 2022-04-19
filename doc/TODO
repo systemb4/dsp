@@ -2,7 +2,7 @@
 
 have a default main.c that is compiled and installed to system
 fix up make file
-rename like all variables to something more sensible
+rename all variables to something more sensible/orginize nachtigal.h
 sort stack function
 
 documentation of each function line by line comments
@@ -11,7 +11,6 @@ multi-thread?
 function for switch statments - lexer
 add comparison ops - lexer
 string to double function
-addDef function number or string
 spaces included in lexer when going through
 only except .nagl files
 
@@ -42,6 +41,7 @@ structure AST so that it can be more widely implementable
 
 sort function for all of the tokens
 addDef function get working
-sor function works for both definitions and names
+sort function works for both definitions and names
+art struct either number or string
 
 - done
