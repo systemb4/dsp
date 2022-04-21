@@ -140,9 +140,10 @@ void addArtHead(Arithmetic **head, char op, char *value, int numPos, enum charTy
      */
 }
 
-void insertArtHead(Arithmetic **head, Arithmetic *node) {
-    node->next = *head;
-    *head = node;
+void insertArtHead(Arithmetic *head, Arithmetic *node) {
+    node->next = head;
+    head->prev = node;
+    head = node;
 }
 
 void addArtEnd(Arithmetic **head, char op, char *value, int numPos, enum charType type) {
@@ -203,10 +204,14 @@ Arithmetic *sortStackOps(Arithmetic **head) {
      */
 
     Arithmetic *tmp = *head;
+    int currPos = 0;
     tmp = tmp->next;
-    while(tmp != NULL) {
+    tmp = tmp->next;
+
+    while(tmp == NULL) {
         if(tmp->op == '*' || tmp->op == '/') {
-            insertArtHead(head, tmp);
+            insertArtHead(*head, tmp);
+            //deleteArt(tmp);
         }
 
         tmp = tmp->next;

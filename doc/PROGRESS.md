@@ -152,3 +152,6 @@
 19 April 2022: Can now swap between double and string in art struct. next is
     some small things and clean up and then sort function and then print
     function and then base is basically finished.
+
+21 April 2022: Now working on sortStackOps function and having trouble moving
+    the nodes around in the linked list
