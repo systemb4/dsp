@@ -29,7 +29,7 @@ todo
 
 - do
 spaces included in lexer when going through
-print function
+print function (will be in seperate file)
 sort stack function
 
     non code stuff
@@ -37,7 +37,7 @@ have a default main.c that is compiled and installed to system
 fix up make file
 rename all variables to something more sensible/orginize nachtigal.h
 documentation of each function line by line comments
-documentation of how it works
+documentation on how to use the language
 
 multi-thread?
 add comparison ops - lexer
@@ -49,7 +49,7 @@ sort function works for both definitions and names
 art struct either number or string
 only except .nagl files
 
-progres
+progress
 -------
 doc/PROGRESS.md
 

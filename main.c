@@ -9,13 +9,21 @@ int main(int argc, char *argv[]) {
 
     Token *tokens = lexer(argv[1]);
     Name *names = parser(tokens);
-
-    //printTokens(tokens);
-    printNames(names);
-
-    printf("\n");
     Arithmetic *art = run(names);
-    //addArtHead(&art, '$', 3.2, 0);
+
+    printTokens(tokens);
+    printf("\n");
+    printNames(names);
+    printf("\n");
+    printArt(art);
+
+    Arithmetic *new = art;
+    new = art->next;
+    new = art->next;
+    new = art->next;
+    printf("\n");
+
+    artMoveBack(&art, new);
     printArt(art);
 
     /*

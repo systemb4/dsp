@@ -8,6 +8,8 @@
 #include <string.h>
 #include <ctype.h>
 
+#include "std.h"
+
 #ifndef __NACHTIGAL_H__
 #define __NACHTIGAL_H__
 
@@ -62,7 +64,7 @@ typedef struct Token {
     enum charType type;
     union {
         char symbol;
-        int val;
+        double val;
     };
     int end;
 } Token;
@@ -128,6 +130,40 @@ Arithmetic *addArt(Arithmetic *head, char op, char *value, int numPos, enum char
 }
 
 void artMoveBack(Arithmetic **head, Arithmetic *node) {
+    if(node->prev == NULL) {
+        return;
+    }
+
+    Arithmetic *tmp = node->prev;
+    tmp->next = node->next;
+    node->prev = tmp->prev;
+
+    if(tmp->next) {
+        tmp->next->prev = tmp;
+    }
+
+    if(node->prev) {
+        node->prev->next = node;
+    }
+
+    node->next = tmp;
+    tmp->prev = node;
+
+
+    /*
+    node->next = node->prev;
+    node->prev = node->next;
+    node->prev->prev = node;
+    */
+
+    /*
+     * something to go through the rest of the list starting at node->prev
+     *  so that it moves everything down one basically
+     *
+    while(*head != NULL) {
+        node->prev->next = node->next;
+    }*/
+
     /*
      * move specified <node> back one position
      *  so basically swap with its prev
