@@ -16,21 +16,10 @@ int main(int argc, char *argv[]) {
     printNames(names);
     printf("\n");
     printArt(art);
-
-    Arithmetic *new = art;
-    new = art->next;
-    new = art->next;
-    new = art->next;
     printf("\n");
 
-    artMoveBack(&art, new);
+    art = sortStackOps(&art);
     printArt(art);
-
-    /*
-    printf("\n");
-    art = sortStack(art);
-    printArt(art);
-    */
 
     free(tokens);
     free(names);

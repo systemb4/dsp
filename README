@@ -31,6 +31,7 @@ todo
 spaces included in lexer when going through
 print function (will be in seperate file)
 sort stack function
+deleteArt function
 
     non code stuff
 have a default main.c that is compiled and installed to system
@@ -48,6 +49,7 @@ addDef function get working
 sort function works for both definitions and names
 art struct either number or string
 only except .nagl files
+insertArt function
 
 progress
 -------

@@ -104,16 +104,14 @@ typedef union Values {
     double numVal;
 } Values;
 
-Arithmetic *addArt(Arithmetic *head, char op, char *value, int numPos, enum charType type) {
+Arithmetic *addArt(char op, char *value, int numPos, enum charType type) {
     Arithmetic *tmp = malloc(sizeof(Arithmetic));
     char *end;
 
     if(CHAR_STRING[type] == CHAR_STRING[NUM]) {
         tmp->numVal = strtod(value, &end);
-        //tmp->str = NULL;
     } else {
         tmp->str = value;
-        //tmp->numVal = NULL;
     }
 
     /*
@@ -129,50 +127,8 @@ Arithmetic *addArt(Arithmetic *head, char op, char *value, int numPos, enum char
     return tmp;
 }
 
-void artMoveBack(Arithmetic **head, Arithmetic *node) {
-    if(node->prev == NULL) {
-        return;
-    }
-
-    Arithmetic *tmp = node->prev;
-    tmp->next = node->next;
-    node->prev = tmp->prev;
-
-    if(tmp->next) {
-        tmp->next->prev = tmp;
-    }
-
-    if(node->prev) {
-        node->prev->next = node;
-    }
-
-    node->next = tmp;
-    tmp->prev = node;
-
-
-    /*
-    node->next = node->prev;
-    node->prev = node->next;
-    node->prev->prev = node;
-    */
-
-    /*
-     * something to go through the rest of the list starting at node->prev
-     *  so that it moves everything down one basically
-     *
-    while(*head != NULL) {
-        node->prev->next = node->next;
-    }*/
-
-    /*
-     * move specified <node> back one position
-     *  so basically swap with its prev
-     */
-}
-
 void addArtHead(Arithmetic **head, char op, char *value, int numPos, enum charType type) {
-    Arithmetic *result = addArt(*head, op, value, numPos, type);
-    Arithmetic *tmp = *head;
+    Arithmetic *result = addArt(op, value, numPos, type);
 
     result->next = *head;
     *head = result;
@@ -184,8 +140,13 @@ void addArtHead(Arithmetic **head, char op, char *value, int numPos, enum charTy
      */
 }
 
+void insertArtHead(Arithmetic **head, Arithmetic *node) {
+    node->next = *head;
+    *head = node;
+}
+
 void addArtEnd(Arithmetic **head, char op, char *value, int numPos, enum charType type) {
-    Arithmetic *result = addArt(*head, op, value, numPos, type);
+    Arithmetic *result = addArt(op, value, numPos, type);
     Arithmetic *lastNode = *head;
 
     if(*head == NULL) {
@@ -197,6 +158,58 @@ void addArtEnd(Arithmetic **head, char op, char *value, int numPos, enum charTyp
 
         result->prev = lastNode;
         lastNode->next = result;
+    }
+}
+
+void insertArt(Arithmetic *node, char op, char *value, int numPos, enum charType type) {
+    Arithmetic *tmp = addArt(op, value, numPos, type);
+
+    if(node->prev == NULL) {
+        fprintf(stderr, "Can not insert node at head! Try using 'addArtHead' instead of 'insertArt'\n");
+        return;
+    }
+
+    Arithmetic *norm = node;
+    Arithmetic *swap = node->prev;
+
+    norm->prev = tmp;
+    swap->next = tmp;
+    tmp->prev = swap;
+    tmp->next = norm;
+
+}
+
+void deleteArt(Arithmetic *node) {
+    Arithmetic *tmp = node;
+    Arithmetic *tmp_prev = node->prev;
+
+    tmp_prev->next = tmp->next;
+    tmp->next->prev = tmp_prev;
+
+    free(tmp);
+    tmp = NULL;
+
+    /*
+     * delete node from art
+     * will be used to move over nodes
+     */
+}
+
+Arithmetic *sortStackOps(Arithmetic **head) {
+    /*
+     * for sort through Definition by order of operations
+     * this is basically insertion sort where a value is compared
+     *  to something and if true just puts it in front
+     */
+
+    Arithmetic *tmp = *head;
+    tmp = tmp->next;
+    while(tmp != NULL) {
+        if(tmp->op == '*' || tmp->op == '/') {
+            insertArtHead(head, tmp);
+        }
+
+        tmp = tmp->next;
     }
 }
 
@@ -276,18 +289,6 @@ char *sortTokens(Token *tokens, int pos) {
     }
 
     return result;
-}
-
-Arithmetic *sortStack(Arithmetic *head) {
-    /*
-     * for sort through Definition by order of operations
-     * this is basically insertion sort where a value is compared
-     *  to something and if true just puts it in front
-     */
-
-    Arithmetic *tmp = head;
-    /*while(tmp != NULL) {
-    }*/
 }
 
 int charCount(FILE *fptr) {
