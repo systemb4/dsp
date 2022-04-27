@@ -18,8 +18,9 @@ int main(int argc, char *argv[]) {
     printArt(art);
     printf("\n");
 
+    /*
     Arithmetic *tmp = sortStackOps(&art);
-    printArt(tmp);
+    printArt(tmp);*/
 
     free(tokens);
     free(names);
