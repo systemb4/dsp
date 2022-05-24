@@ -5,3 +5,13 @@
 (nums): ['2' + '3.6' * '4' - '6' / '8']
 (twoStrings): [verb + adj]
 (next): ["hello" + "world"]
+
+
+
+
+
+
+
+(number): ['7.3']
+(numbers): ['5.3' + '8.2']
+(word): ["hello"]

@@ -104,6 +104,27 @@ typedef union Values {
     double numVal;
 } Values;
 
+Arithmetic *addArt(char op, char *value, int numPos, enum charType type);
+void addArtHead(Arithmetic **head, char op, char *value, int numPos, enum charType type);
+void insertArtHead(Arithmetic *head, Arithmetic *node);
+void addArtEnd(Arithmetic **head, char op, char *value, int numPos, enum charType type);
+void insertArt(Arithmetic *node, char op, char *value, int numPos, enum charType type);
+void deleteArt(Arithmetic *node);
+Arithmetic *sortStackOps(Arithmetic **head);
+void addName(Name **head, char **name, enum keyWord type);
+void addDefinition(Name **head, char **val, enum keyWord type);
+char *sortTokens(Token *tokens, int pos);
+int charCount(FILE *fptr);
+int tokensLength(Token *tokens);
+int namesLength(Name *names);
+size_t getSize (const char* s);
+char charCheck(char ch);
+void printTokens(Token *tokens);
+void printArt(Arithmetic *head);
+Token *lexer(char name[]);
+Name *parser(Token *tokens);
+Arithmetic *run(Name *head);
+
 Arithmetic *addArt(char op, char *value, int numPos, enum charType type) {
     Arithmetic *tmp = malloc(sizeof(Arithmetic));
     char *end;
@@ -372,7 +393,7 @@ void printNames(Name *head) {
         printf("%s - ", tmp->name);
         printf("%s\n", tmp->defLink->stringVal);
         tmp = tmp->nameLink;
-    }
+   }
 }
 
 void printArt(Arithmetic *head) {
