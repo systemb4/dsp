@@ -123,7 +123,7 @@ void printTokens(Token *tokens);
 void printArt(Arithmetic *head);
 Token *lexer(char name[]);
 Name *parser(Token *tokens);
-Arithmetic *run(Name *head);
+
 
 Arithmetic *addArt(char op, char *value, int numPos, enum charType type) {
     Arithmetic *tmp = malloc(sizeof(Arithmetic));
